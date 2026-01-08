@@ -1,17 +1,17 @@
-# Esempi di Query CKAN MCP
+# CKAN MCP Query Examples
 
-Questo file contiene esempi pratici di utilizzo del server CKAN MCP.
+This file contains practical examples of using the CKAN MCP server.
 
-## Test Connessione
+## Connection Tests
 
-### Verifica stato server
+### Verify server status
 ```typescript
 ckan_status_show({
   server_url: "https://demo.ckan.org"
 })
 ```
 
-### Lista dataset
+### List datasets
 ```typescript
 ckan_package_search({
   server_url: "https://demo.ckan.org",
@@ -20,9 +20,9 @@ ckan_package_search({
 })
 ```
 
-## Esempi Italia - dati.gov.it
+## Italy Examples - dati.gov.it
 
-### Cerca dataset recenti
+### Search recent datasets
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -32,7 +32,7 @@ ckan_package_search({
 })
 ```
 
-### Dataset su COVID-19
+### COVID-19 datasets
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -41,7 +41,7 @@ ckan_package_search({
 })
 ```
 
-### Dataset della Regione Siciliana
+### Regione Siciliana datasets
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -51,16 +51,16 @@ ckan_package_search({
 })
 ```
 
-### Cerca organizzazioni per nome (metodo semplice)
+### Search organizations by name (simple method)
 ```typescript
-// Trova organizzazioni che contengono "toscana" nel nome
+// Find organizations containing "toscana" in the name
 ckan_organization_search({
   server_url: "https://www.dati.gov.it/opendata",
   pattern: "toscana"
 })
 // → Restituisce: Regione Toscana (10988 dataset), Autorità Idrica Toscana (12 dataset)
 
-// Altri esempi
+// Other examples
 ckan_organization_search({
   server_url: "https://www.dati.gov.it/opendata",
   pattern: "salute"
@@ -72,9 +72,9 @@ ckan_organization_search({
 })
 ```
 
-### Cerca organizzazioni con wildcard (metodo avanzato)
+### Search organizations with wildcard (advanced method)
 ```typescript
-// Metodo alternativo usando package_search (più flessibile ma più complesso)
+// Alternative method using package_search (more flexible but more complex)
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "organization:*salute*",
@@ -84,7 +84,7 @@ ckan_package_search({
 })
 ```
 
-### Statistiche per organizzazione
+### Statistics by organization
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -94,7 +94,7 @@ ckan_package_search({
 })
 ```
 
-### Statistiche per formato risorse
+### Statistics by resource format
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -104,7 +104,7 @@ ckan_package_search({
 })
 ```
 
-### Lista organizzazioni
+### List organizations
 ```typescript
 ckan_organization_list({
   server_url: "https://www.dati.gov.it/opendata",
@@ -114,7 +114,7 @@ ckan_organization_list({
 })
 ```
 
-### Dettagli organizzazione specifica
+### Specific organization details
 ```typescript
 ckan_organization_show({
   server_url: "https://www.dati.gov.it/opendata",
@@ -123,7 +123,7 @@ ckan_organization_show({
 })
 ```
 
-### Dataset con formato CSV
+### CSV format datasets
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -132,9 +132,9 @@ ckan_package_search({
 })
 ```
 
-## Esempi USA - data.gov
+## USA Examples - data.gov
 
-### Cerca dataset governativi
+### Search government datasets
 ```typescript
 ckan_package_search({
   server_url: "https://catalog.data.gov",
@@ -143,7 +143,7 @@ ckan_package_search({
 })
 ```
 
-### Dataset per tag
+### Datasets by tag
 ```typescript
 ckan_package_search({
   server_url: "https://catalog.data.gov",
@@ -152,9 +152,9 @@ ckan_package_search({
 })
 ```
 
-## Esempi Demo CKAN
+## CKAN Demo Examples
 
-### Esplora demo.ckan.org
+### Explore demo.ckan.org
 ```typescript
 ckan_status_show({
   server_url: "https://demo.ckan.org"
@@ -177,9 +177,9 @@ ckan_package_search({
 })
 ```
 
-## Query DataStore
+## DataStore Queries
 
-### Query base su risorsa
+### Basic query on resource
 ```typescript
 ckan_datastore_search({
   server_url: "https://demo.ckan.org",
@@ -188,7 +188,7 @@ ckan_datastore_search({
 })
 ```
 
-### Query con filtri
+### Query with filters
 ```typescript
 ckan_datastore_search({
   server_url: "https://demo.ckan.org",
@@ -200,7 +200,7 @@ ckan_datastore_search({
 })
 ```
 
-### Query con ordinamento
+### Query with sorting
 ```typescript
 ckan_datastore_search({
   server_url: "https://demo.ckan.org",
@@ -210,9 +210,9 @@ ckan_datastore_search({
 })
 ```
 
-## Ricerche Avanzate con Solr
+## Advanced Solr Searches
 
-### Combinazione AND
+### AND combination
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -221,7 +221,7 @@ ckan_package_search({
 })
 ```
 
-### Combinazione OR
+### OR combination
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -230,7 +230,7 @@ ckan_package_search({
 })
 ```
 
-### Esclusione NOT
+### NOT exclusion
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -239,7 +239,7 @@ ckan_package_search({
 })
 ```
 
-### Ricerca per titolo
+### Search by title
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -248,7 +248,7 @@ ckan_package_search({
 })
 ```
 
-### Ricerca per descrizione
+### Search by description
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -266,7 +266,7 @@ ckan_package_search({
 })
 ```
 
-### Filtro per range date
+### Date range filter
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -275,7 +275,7 @@ ckan_package_search({
 })
 ```
 
-### Dataset modificati nell'ultimo mese
+### Datasets modified in last month
 ```typescript
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
@@ -285,12 +285,12 @@ ckan_package_search({
 })
 ```
 
-## Workflow Completi
+## Complete Workflows
 
-### Workflow 1: Analisi Dataset Regionali
+### Workflow 1: Regional Dataset Analysis
 
 ```typescript
-// Step 1: Lista organizzazioni regionali
+// Step 1: List regional organizations
 ckan_organization_list({
   server_url: "https://www.dati.gov.it/opendata",
   all_fields: true,
@@ -298,7 +298,7 @@ ckan_organization_list({
   limit: 50
 })
 
-// Step 2: Seleziona una regione e cerca i suoi dataset
+// Step 2: Select a region and search its datasets
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   fq: "organization:regione-siciliana",
@@ -306,17 +306,17 @@ ckan_package_search({
   rows: 50
 })
 
-// Step 3: Ottieni dettagli di un dataset interessante
+// Step 3: Get details of an interesting dataset
 ckan_package_show({
   server_url: "https://www.dati.gov.it/opendata",
   id: "nome-dataset-trovato"
 })
 ```
 
-### Workflow 2: Monitoraggio Nuove Pubblicazioni
+### Workflow 2: Monitor New Publications
 
 ```typescript
-// Dataset pubblicati negli ultimi 7 giorni
+// Datasets published in the last 7 days
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   fq: "metadata_created:[NOW-7DAYS TO NOW]",
@@ -324,7 +324,7 @@ ckan_package_search({
   rows: 50
 })
 
-// Dataset modificati negli ultimi 7 giorni
+// Datasets modified in the last 7 days
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   fq: "metadata_modified:[NOW-7DAYS TO NOW]",
@@ -333,10 +333,10 @@ ckan_package_search({
 })
 ```
 
-### Workflow 3: Analisi Copertura Dati
+### Workflow 3: Data Coverage Analysis
 
 ```typescript
-// Step 1: Statistiche formati
+// Step 1: Statistics by format
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   facet_field: ["res_format"],
@@ -344,7 +344,7 @@ ckan_package_search({
   rows: 0
 })
 
-// Step 2: Statistiche licenze
+// Step 2: Statistics by license
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   facet_field: ["license_id"],
@@ -352,7 +352,7 @@ ckan_package_search({
   rows: 0
 })
 
-// Step 3: Statistiche organizzazioni
+// Step 3: Statistics by organization
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   facet_field: ["organization"],
@@ -360,7 +360,7 @@ ckan_package_search({
   rows: 0
 })
 
-// Step 4: Tag più usati
+// Step 4: Most used tags
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   facet_field: ["tags"],
@@ -369,12 +369,12 @@ ckan_package_search({
 })
 ```
 
-### Workflow 4: Ricerca Tematica Specifica
+### Workflow 4: Specific Thematic Search
 
 ```typescript
-// Esempio: Dataset su ambiente e clima
+// Example: Environment and climate datasets
 
-// Step 1: Ricerca generale
+// Step 1: General search
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "ambiente OR clima OR inquinamento OR emissioni",
@@ -382,7 +382,7 @@ ckan_package_search({
   rows: 50
 })
 
-// Step 2: Raffina con filtri
+// Step 2: Refine with filters
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "ambiente",
@@ -391,7 +391,7 @@ ckan_package_search({
   rows: 20
 })
 
-// Step 3: Analizza organizzazioni che pubblicano su questo tema
+// Step 3: Analyze organizations publishing on this theme
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "ambiente",
@@ -400,13 +400,13 @@ ckan_package_search({
 })
 ```
 
-## Output Formati
+## Output Formats
 
-### Formato Markdown (default)
-Leggibile, formattato con tabelle e sezioni
+### Markdown format (default)
+Readable, formatted with tables and sections
 
-### Formato JSON
-Per elaborazione programmatica
+### JSON format
+For programmatic processing
 
 ```typescript
 ckan_package_search({
@@ -417,10 +417,10 @@ ckan_package_search({
 })
 ```
 
-## Note
+## Notes
 
-- La paginazione default è 10 risultati per `package_search`
-- Il massimo è 1000 risultati per chiamata
-- Per dataset molto grandi, usa `start` per paginare
-- Il DataStore ha un limite di 32000 record per query
-- Non tutti i dataset hanno risorse nel DataStore (controlla `datastore_active`)
+- Default pagination is 10 results for `package_search`
+- Maximum is 1000 results per call
+- For very large datasets, use `start` to paginate
+- The DataStore has a limit of 32,000 records per query
+- Not all datasets have resources in the DataStore (check `datastore_active`)

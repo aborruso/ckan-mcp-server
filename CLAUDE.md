@@ -21,31 +21,33 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Important**: This project uses **English** as its primary language. All documentation, code comments, and commit messages should be in English.
+
 ## Project Overview
 
-CKAN MCP Server - MCP (Model Context Protocol) server per interagire con portali di dati aperti basati su CKAN (dati.gov.it, data.gov, demo.ckan.org, etc.).
+CKAN MCP Server - MCP (Model Context Protocol) server for interacting with CKAN-based open data portals (dati.gov.it, data.gov, demo.ckan.org, etc.).
 
-Il server espone strumenti MCP per:
-- Ricerca avanzata dataset con sintassi Solr
-- Query DataStore per analisi dati tabulari
-- Esplorazione organizzazioni e gruppi
-- Accesso a metadati completi
+The server exposes MCP tools for:
+- Advanced dataset search with Solr syntax
+- DataStore queries for tabular data analysis
+- Organization and group exploration
+- Complete metadata access
 
-## Build e Sviluppo
+## Build and Development
 
-### Comandi Principali
+### Main Commands
 
 ```bash
-# Build del progetto (usa esbuild - veloce e leggero)
+# Build project (uses esbuild - fast and lightweight)
 npm run build
 
-# Avvio server in modalità stdio (default per integrazione locale)
+# Start server in stdio mode (default for local integration)
 npm start
 
-# Avvio server in modalità HTTP (per accesso remoto)
+# Start server in HTTP mode (for remote access)
 TRANSPORT=http PORT=3000 npm start
 
-# Watch mode per sviluppo
+# Watch mode for development
 npm run watch
 
 # Build + run
@@ -54,20 +56,20 @@ npm run dev
 
 ### Build System
 
-Il progetto usa **esbuild** per la compilazione invece di tsc per garantire:
-- Build ultra-veloce (millisecondi invece di minuti)
-- Utilizzo minimo di memoria (importante in ambienti WSL)
-- Bundling automatico con tree-shaking
+The project uses **esbuild** for compilation instead of tsc to ensure:
+- Ultra-fast builds (milliseconds instead of minutes)
+- Minimal memory usage (important in WSL environments)
+- Automatic bundling with tree-shaking
 
-Lo script `build:tsc` è disponibile come fallback ma può causare problemi di memoria in alcuni ambienti (particolarmente WSL). Usa sempre `npm run build` che utilizza esbuild.
+The `build:tsc` script is available as a fallback but can cause memory issues in some environments (particularly WSL). Always use `npm run build` which uses esbuild.
 
-Il build esbuild esegue il bundle di tutti i moduli interni ma mantiene le dipendenze esterne (`@modelcontextprotocol/sdk`, `axios`, `express`, `zod`) come external, quindi devono essere presenti in `node_modules`.
+The esbuild build bundles all internal modules but keeps external dependencies (`@modelcontextprotocol/sdk`, `axios`, `express`, `zod`) as external, so they must be present in `node_modules`.
 
-## Architettura
+## Architecture
 
-### Struttura del Codice
+### Code Structure
 
-Il server è implementato con una struttura modulare per migliorare manutenibilità e testabilità:
+The server is implemented with a modular structure to improve maintainability and testability:
 
 ```
 src/
@@ -87,23 +89,23 @@ src/
     └── http.ts           # HTTP transport (27 lines)
 ```
 
-**Total**: 1097 lines (modularizzato da file unico di 1021 lines)
+**Total**: 1097 lines (modularized from single file of 1021 lines)
 
-Il server (`src/index.ts`) che:
+The server (`src/index.ts`):
 
 1. **Entry Point** (`index.ts`)
-   - Importa e registra tutti i tool
-   - Sceglie transport (stdio/http) da variabile ambiente
-   - Gestisce startup e error handling
+   - Imports and registers all tools
+   - Chooses transport (stdio/http) from environment variable
+   - Handles startup and error handling
 
-2. **Tool Registrati** (in moduli separati)
+2. **Registered Tools** (in separate modules)
    - `tools/package.ts`: `ckan_package_search`, `ckan_package_show`
    - `tools/organization.ts`: `ckan_organization_list`, `ckan_organization_show`, `ckan_organization_search`
    - `tools/datastore.ts`: `ckan_datastore_search`
    - `tools/status.ts`: `ckan_status_show`
 
 3. **Utility Functions** (`utils/`)
-   - `http.ts`: `makeCkanRequest<T>()` - Client HTTP per API CKAN v3
+   - `http.ts`: `makeCkanRequest<T>()` - HTTP client for CKAN API v3
    - `formatting.ts`: `truncateText()`, `formatDate()`, `formatBytes()`
 
 4. **Type Definitions** (`types.ts`)
@@ -113,111 +115,133 @@ Il server (`src/index.ts`) che:
 
 5. **Transport Layer** (`transport/`)
    - `stdio.ts`: Standard input/output (Claude Desktop)
-   - `http.ts`: HTTP server (accesso remoto)
+   - `http.ts`: HTTP server (remote access)
 
-6. **Schema di Validazione**
-   - Utilizza Zod per validare tutti gli input dei tool
-   - Ogni tool ha uno schema strict che rifiuta parametri extra
+6. **Validation Schema**
+   - Uses Zod to validate all tool inputs
+   - Each tool has a strict schema that rejects extra parameters
 
 7. **Output Formatting**
-   - Tutti i tool supportano due formati: `markdown` (default) e `json`
-   - Formato markdown ottimizzato per leggibilità umana
-   - Formato JSON per elaborazione programmatica
+   - All tools support two formats: `markdown` (default) and `json`
+   - Markdown format optimized for human readability
+   - JSON format for programmatic processing
 
-### Modalità di Trasporto
+### Transport Modes
 
-Il server seleziona automaticamente la modalità di trasporto basandosi sulla variabile d'ambiente `TRANSPORT`:
+The server automatically selects the transport mode based on the `TRANSPORT` environment variable:
 
-- **stdio** (default): per integrazione con Claude Desktop e altri client MCP locali
-- **http**: espone endpoint POST `/mcp` su porta configurabile (default 3000)
+- **stdio** (default): for integration with Claude Desktop and other local MCP clients
+- **http**: exposes POST `/mcp` endpoint on configurable port (default 3000)
 
 ### CKAN API Integration
 
-Il server utilizza le CKAN API v3 disponibili su qualsiasi portale CKAN. Tutte le richieste:
+The server uses CKAN API v3 available on any CKAN portal. All requests:
 
-- Usano `axios` con timeout di 30 secondi
-- Inviano User-Agent `CKAN-MCP-Server/1.0`
-- Gestiscono errori HTTP, timeout e server non trovati
-- Normalizzano l'URL del server (rimuovono trailing slash)
-- Validano che `response.success === true`
+- Use `axios` with 30 second timeout
+- Send User-Agent `CKAN-MCP-Server/1.0`
+- Handle HTTP errors, timeouts, and server not found
+- Normalize server URL (removing trailing slash)
+- Validate that `response.success === true`
 
-### Query Solr
+### Solr Queries
 
-CKAN usa Apache Solr per la ricerca. Il tool `ckan_package_search` supporta:
+CKAN uses Apache Solr for search. The `ckan_package_search` tool supports:
 
-- **q** (query): sintassi completa Solr (campo:valore, AND/OR/NOT, wildcard, range)
-- **fq** (filter query): filtri aggiuntivi senza influenzare lo score
-- **facet_field**: aggregazioni per analisi statistiche
-- **sort**: ordinamento risultati
-- **start/rows**: paginazione
+- **q** (query): complete Solr syntax (field:value, AND/OR/NOT, wildcard, range)
+- **fq** (filter query): additional filters without affecting score
+- **facet_field**: aggregations for statistical analysis
+- **sort**: result ordering
+- **start/rows**: pagination
 
-Esempi comuni di query sono documentati in `EXAMPLES.md`.
+Common query examples are documented in `EXAMPLES.md`.
 
 ## TypeScript Configuration
 
-Il progetto usa ES2022 come target e module system.
+The project uses ES2022 as target and module system.
 
-**Nota**: `tsconfig.json` è presente principalmente per editor support (IDE, LSP). La compilazione effettiva usa esbuild che ignora la maggior parte delle opzioni TypeScript per massimizzare la velocità.
+**Note**: `tsconfig.json` is present mainly for editor support (IDE, LSP). The actual compilation uses esbuild which ignores most TypeScript options to maximize speed.
 
-Configurazione TypeScript (per IDE):
+TypeScript configuration (for IDE):
 - Output in `dist/` directory
-- Strict mode abilitato
-- Type checking rigoroso con noUnusedLocals, noUnusedParameters, noImplicitReturns
-- Skip lib check per ridurre overhead
-- Declaration e source map disabilitati
+- Strict mode enabled
+- Strict type checking with noUnusedLocals, noUnusedParameters, noImplicitReturns
+- Skip lib check to reduce overhead
+- Declaration and source map disabled
 
 ## Dependencies
 
 **Runtime**:
-- `@modelcontextprotocol/sdk` - SDK MCP ufficiale
-- `axios` - HTTP client per CKAN API
+- `@modelcontextprotocol/sdk` - Official MCP SDK
+- `axios` - HTTP client for CKAN API
 - `zod` - Schema validation
-- `express` - Server HTTP (solo per modalità http)
+- `express` - HTTP server (only for http mode)
 
 **Dev**:
-- `esbuild` - Build tool (bundler e compiler)
-- `typescript` - Solo per type checking e editor support
+- `esbuild` - Build tool (bundler and compiler)
+- `typescript` - Only for type checking and editor support
 - `@types/node`, `@types/express` - Type definitions
 
-## Portali CKAN Supportati
+## Supported CKAN Portals
 
-Il server può connettersi a qualsiasi istanza CKAN. Alcuni portali principali:
+The server can connect to any CKAN instance. Some main portals:
 
-- 🇮🇹 https://dati.gov.it (Italia)
-- 🇺🇸 https://catalog.data.gov (Stati Uniti)
+- 🇮🇹 https://dati.gov.it (Italy)
+- 🇺🇸 https://catalog.data.gov (United States)
 - 🇨🇦 https://open.canada.ca/data (Canada)
-- 🇬🇧 https://data.gov.uk (Regno Unito)
-- 🇪🇺 https://data.europa.eu (Unione Europea)
-- 🌍 https://demo.ckan.org (Demo ufficiale CKAN)
+- 🇬🇧 https://data.gov.uk (United Kingdom)
+- 🇪🇺 https://data.europa.eu (European Union)
+- 🌍 https://demo.ckan.org (Official CKAN Demo)
 
-Ogni portale può avere configurazioni diverse per:
+Each portal may have different configurations for:
 - DataStore availability
-- Campi custom nei dataset
-- Organizzazioni e tag disponibili
-- Formati risorse supportati
+- Custom dataset fields
+- Available organizations and tags
+- Supported resource formats
 
-## Testing
 
-Il progetto non ha test automatizzati. Per testare manualmente:
+The project uses **Vitest** for automated testing:
 
 ```bash
-# Build del progetto
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+```
+
+Test coverage target is 80%. Current test suite includes:
+- Unit tests for utility functions (formatting, HTTP)
+- Integration tests for MCP tools with mocked CKAN API responses
+- Mock fixtures for CKAN API success and error scenarios
+
+See `tests/README.md` for detailed testing guidelines and fixture structure.
+
+### Manual Testing
+
+For manual testing:
+
+```bash
+# Build project
 npm run build
 
 # Test stdio mode
 npm start
-# (Il server rimarrà in attesa di comandi MCP su stdin)
+# (Server will wait for MCP commands on stdin)
 
-# Test HTTP mode in un terminale
+# Test HTTP mode in a terminal
 TRANSPORT=http PORT=3000 npm start
 
-# In un altro terminale, test con curl
+# In another terminal, test with curl
 curl -X POST http://localhost:3000/mcp \
   -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+  -d {"jsonrpc":"2.0","method":"tools/list","id":1}
 ```
 
-Per testare con Claude Desktop, aggiungere al config file la configurazione MCP.
+To test with Claude Desktop, add MCP configuration to config file.
+To test with Claude Desktop, add the MCP configuration to the config file.
 
 ## Note di Sviluppo
 

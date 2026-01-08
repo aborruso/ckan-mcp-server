@@ -1,49 +1,49 @@
 # CKAN MCP Server
 
-MCP (Model Context Protocol) server per interagire con portali di dati aperti basati su CKAN.
+MCP (Model Context Protocol) server for interacting with CKAN-based open data portals.
 
-## Caratteristiche
+## Features
 
-- ✅ Supporto per qualsiasi server CKAN (dati.gov.it, data.gov, demo.ckan.org, etc.)
-- 🔍 Ricerca avanzata con sintassi Solr
-- 📊 Query DataStore per analisi dati tabulari
-- 🏢 Esplorazione organizzazioni e gruppi
-- 📦 Metadati completi di dataset e risorse
-- 🎨 Output in formato Markdown o JSON
-- ⚡ Supporto paginazione e faceting
+- ✅ Support for any CKAN server (dati.gov.it, data.gov, demo.ckan.org, etc.)
+- 🔍 Advanced search with Solr syntax
+- 📊 DataStore queries for tabular data analysis
+- 🏢 Organization and group exploration
+- 📦 Complete dataset and resource metadata
+- 🎨 Output in Markdown or JSON format
+- ⚡ Pagination and faceting support
 
-## Installazione
+## Installation
 
 ```bash
-# Clona o copia il progetto
+# Clone or copy the project
 cd ckan-mcp-server
 
-# Installa le dipendenze
+# Install dependencies
 npm install
 
-# Compila con esbuild (veloce, ~4ms)
+# Build with esbuild (fast, ~4ms)
 npm run build
 ```
 
-## Utilizzo
+## Usage
 
-### Avvio con stdio (per integrazione locale)
+### Start with stdio (for local integration)
 
 ```bash
 npm start
 ```
 
-### Avvio con HTTP (per accesso remoto)
+### Start with HTTP (for remote access)
 
 ```bash
 TRANSPORT=http PORT=3000 npm start
 ```
 
-Il server sarà disponibile su `http://localhost:3000/mcp`
+The server will be available at `http://localhost:3000/mcp`
 
-## Configurazione in Claude Desktop
+## Claude Desktop Configuration
 
-Aggiungi al file di configurazione di Claude Desktop (`claude_desktop_config.json`):
+Add to Claude Desktop configuration file (`claude_desktop_config.json`):
 
 ```json
 {
@@ -60,31 +60,31 @@ Su macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 Su Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 Su Linux: `~/.config/Claude/claude_desktop_config.json`
 
-## Tool Disponibili
+## Available Tools
 
-### Ricerca e Scoperta
+### Search and Discovery
 
-- **ckan_package_search**: Cerca dataset con query Solr
-- **ckan_package_show**: Dettagli completi di un dataset
-- **ckan_package_list**: Lista tutti i dataset
+- **ckan_package_search**: Search datasets with Solr queries
+- **ckan_package_show**: Complete details of a dataset
+- **ckan_package_list**: List all datasets
 
-### Organizzazioni
+### Organizations
 
-- **ckan_organization_list**: Lista tutte le organizzazioni
-- **ckan_organization_show**: Dettagli di un'organizzazione
+- **ckan_organization_list**: List all organizations
+- **ckan_organization_show**: Details of an organization
 
 ### DataStore
 
-- **ckan_datastore_search**: Query su dati tabulari
-- **ckan_datastore_search_sql**: Query SQL (in sviluppo)
+- **ckan_datastore_search**: Query tabular data
+- **ckan_datastore_search_sql**: SQL queries (in development)
 
-### Utilità
+### Utilities
 
-- **ckan_status_show**: Verifica stato del server
+- **ckan_status_show**: Verify server status
 
-## Esempi d'Uso
+## Usage Examples
 
-### Cercare dataset su dati.gov.it
+### Search datasets on dati.gov.it
 
 ```typescript
 ckan_package_search({
@@ -94,7 +94,7 @@ ckan_package_search({
 })
 ```
 
-### Filtrare per organizzazione
+### Filter by organization
 
 ```typescript
 ckan_package_search({
@@ -104,10 +104,10 @@ ckan_package_search({
 })
 ```
 
-### Cercare organizzazioni con wildcard
+### Search organizations with wildcard
 
 ```typescript
-// Trova tutte le organizzazioni che contengono "salute" nel nome
+// Find all organizations containing "salute" in the name
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "organization:*salute*",
@@ -117,7 +117,7 @@ ckan_package_search({
 })
 ```
 
-### Ottenere statistiche con faceting
+### Get statistics with faceting
 
 ```typescript
 ckan_package_search({
@@ -127,7 +127,7 @@ ckan_package_search({
 })
 ```
 
-### Query DataStore
+### DataStore Query
 
 ```typescript
 ckan_datastore_search({
@@ -139,36 +139,36 @@ ckan_datastore_search({
 })
 ```
 
-## Portali CKAN Supportati
+## Supported CKAN Portals
 
-Alcuni dei principali portali compatibili:
+Some of the main compatible portals:
 
-- 🇮🇹 **www.dati.gov.it/opendata** - Italia
-- 🇺🇸 **data.gov** - Stati Uniti
+- 🇮🇹 **www.dati.gov.it/opendata** - Italy
+- 🇺🇸 **data.gov** - United States
 - 🇨🇦 **open.canada.ca/data** - Canada
-- 🇬🇧 **data.gov.uk** - Regno Unito
-- 🇪🇺 **data.europa.eu** - Unione Europea
-- 🌍 **demo.ckan.org** - Demo CKAN
-- E oltre 500+ portali in tutto il mondo
+- 🇬🇧 **data.gov.uk** - United Kingdom
+- 🇪🇺 **data.europa.eu** - European Union
+- 🌍 **demo.ckan.org** - CKAN Demo
+- And 500+ more portals worldwide
 
-## Query Solr Avanzate
+## Advanced Solr Queries
 
-CKAN usa Apache Solr per la ricerca. Esempi:
+CKAN uses Apache Solr for search. Examples:
 
 ```
-# Ricerca base
+# Basic search
 q: "popolazione"
 
-# Ricerca per campo
+# Field search
 q: "title:popolazione"
 q: "notes:sanità"
 
-# Operatori booleani
+# Boolean operators
 q: "popolazione AND sicilia"
 q: "popolazione OR abitanti"
 q: "popolazione NOT censimento"
 
-# Filtri (fq)
+# Filters (fq)
 fq: "organization:comune-palermo"
 fq: "tags:sanità"
 fq: "res_format:CSV"
@@ -176,44 +176,66 @@ fq: "res_format:CSV"
 # Wildcard
 q: "popolaz*"
 
-# Range date
+# Date range
 fq: "metadata_modified:[2023-01-01T00:00:00Z TO *]"
 ```
 
-## Struttura del Progetto
+## Project Structure
 
 ```
 ckan-mcp-server/
 ├── src/
-│   └── index.ts          # Implementazione server MCP
-├── dist/                 # File compilati (generati)
-├── package.json          # Dipendenze npm
-├── tsconfig.json         # Configurazione TypeScript
-├── README.md             # Questo file
-└── SKILL.md             # Documentazione dettagliata skill
+│   └── index.ts          # MCP server implementation
+├── dist/                 # Compiled files (generated)
+├── package.json          # npm dependencies
+├── tsconfig.json         # TypeScript configuration
+├── README.md             # This file
+└── SKILL.md             # Detailed skill documentation
 ```
 
-## Sviluppo
+## Development
+
+### Testing
+
+The project uses **Vitest** for automated testing:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+```
+
+Test coverage target is 80%. Current test suite includes:
+- Unit tests for utility functions (formatting, HTTP)
+- Integration tests for MCP tools with mocked CKAN API responses
+- Mock fixtures for CKAN API success and error scenarios
+
+See `tests/README.md` for detailed testing guidelines.
 
 ### Build
 
-Il progetto usa **esbuild** per una compilazione ultra-veloce (~4ms):
+The project uses **esbuild** for ultra-fast compilation (~4ms):
 
 ```bash
-# Build con esbuild (default)
+# Build with esbuild (default)
 npm run build
 
-# Watch mode per sviluppo
+# Watch mode for development
 npm run watch
 ```
 
-### Test Manuale
+### Manual Testing
 
 ```bash
-# Avvia server in modalità HTTP
+# Start server in HTTP mode
 TRANSPORT=http PORT=3000 npm start
 
-# In un altro terminale, testa i tool disponibili
+# In another terminal, test available tools
 curl -X POST http://localhost:3000/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
@@ -222,28 +244,28 @@ curl -X POST http://localhost:3000/mcp \
 
 ## Troubleshooting
 
-### URL dati.gov.it
+### dati.gov.it URL
 
-**Importante**: L'URL corretto per il portale italiano è `https://www.dati.gov.it/opendata` (non `https://dati.gov.it`).
+**Important**: The correct URL for the Italian portal is `https://www.dati.gov.it/opendata` (not `https://dati.gov.it`).
 
-### Errore di connessione
+### Connection error
 
 ```
 Error: Server not found: https://esempio.gov.it
 ```
 
-**Soluzione**: Verifica che l'URL sia corretto e che il server sia online. Usa `ckan_status_show` per verificare.
+**Solution**: Verify the URL is correct and the server is online. Use `ckan_status_show` to verify.
 
-### Nessun risultato
+### No results
 
 ```typescript
-// Usa query più generica
+// Use a more generic query
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   q: "*:*"
 })
 
-// Verifica contenuti con faceting
+// Check contents with faceting
 ckan_package_search({
   server_url: "https://www.dati.gov.it/opendata",
   facet_field: ["tags", "organization"],
@@ -251,34 +273,34 @@ ckan_package_search({
 })
 ```
 
-## Contribuire
+## Contributing
 
-Contribuzioni benvenute! Per favore:
+Contributions are welcome! Please:
 
-1. Fork del progetto
-2. Crea un branch per la feature (`git checkout -b feature/AmazingFeature`)
-3. Commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
-5. Apri una Pull Request
+1. Fork the project
+2. Create a branch for the feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Licenza
+## License
 
-MIT License - Vedere il file SKILL.md per dettagli completi.
+MIT License - See SKILL.md file for complete details.
 
-## Link Utili
+## Useful Links
 
 - **CKAN**: https://ckan.org/
-- **Documentazione API CKAN**: https://docs.ckan.org/en/latest/api/
+- **CKAN API Documentation**: https://docs.ckan.org/en/latest/api/
 - **MCP Protocol**: https://modelcontextprotocol.io/
 - **onData**: https://www.ondata.it/
 - **dati.gov.it**: https://www.dati.gov.it/opendata/
 
-## Supporto
+## Support
 
-Per problemi o domande:
-- Apri una issue su GitHub
-- Contatta onData: https://www.ondata.it/
+For issues or questions:
+- Open an issue on GitHub
+- Contact onData: https://www.ondata.it/
 
 ---
 
-Creato con ❤️ da onData per la comunità dell'open data
+Created with ❤️ by onData for the open data community
