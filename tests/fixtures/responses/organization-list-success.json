@@ -1,0 +1,42 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=organization_list",
+  "success": true,
+  "result": [
+    {
+      "id": "org-1",
+      "name": "example-org",
+      "title": "Example Organization",
+      "type": "organization",
+      "description": "This is an example organization",
+      "image_url": "",
+      "created": "2023-01-01T10:00:00Z",
+      "is_organization": true,
+      "approval_status": "approved",
+      "state": "active"
+    },
+    {
+      "id": "org-2",
+      "name": "data-gov",
+      "title": "Data Government",
+      "type": "organization",
+      "description": "Government data organization",
+      "image_url": "",
+      "created": "2023-02-01T10:00:00Z",
+      "is_organization": true,
+      "approval_status": "approved",
+      "state": "active"
+    },
+    {
+      "id": "org-3",
+      "name": "stats-dept",
+      "title": "Statistics Department",
+      "type": "organization",
+      "description": "Department of statistics and analysis",
+      "image_url": "",
+      "created": "2023-03-01T10:00:00Z",
+      "is_organization": true,
+      "approval_status": "approved",
+      "state": "active"
+    }
+  ]
+}

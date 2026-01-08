@@ -1,0 +1,9 @@
+{
+  "success": false,
+  "error": {
+    "__type": "Server Error",
+    "message": "Internal Server Error",
+    "status": 500,
+    "__details": "An unexpected error occurred while processing your request"
+  }
+}

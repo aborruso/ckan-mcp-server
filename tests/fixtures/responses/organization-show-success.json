@@ -1,0 +1,49 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=organization_show",
+  "success": true,
+  "result": {
+    "id": "org-1",
+    "name": "example-org",
+    "title": "Example Organization",
+    "type": "organization",
+    "description": "This is an example organization that publishes various datasets",
+    "image_url": "",
+    "created": "2023-01-01T10:00:00Z",
+    "is_organization": true,
+    "approval_status": "approved",
+    "state": "active",
+    "image_display_url": "",
+    "package_count": 25,
+    "users": [
+      {
+        "name": "john_doe",
+        "capacity": "admin",
+        "id": "user-1"
+      },
+      {
+        "name": "jane_smith",
+        "capacity": "editor",
+        "id": "user-2"
+      }
+    ],
+    "display_name": "Example Organization",
+    "description": "This is an example organization that publishes various datasets",
+    "image_url": "",
+    "created": "2023-01-01T10:00:00Z",
+    "type": "organization",
+    "is_organization": true,
+    "approval_status": "approved",
+    "state": "active",
+    "extras": [
+      {
+        "key": "contact_email",
+        "value": "contact@example.org"
+      },
+      {
+        "key": "website",
+        "value": "http://example.org"
+      }
+    ],
+    "packages": []
+  }
+}

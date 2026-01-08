@@ -1,0 +1,119 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=package_show",
+  "success": true,
+  "result": {
+    "id": "pkg-1",
+    "name": "example-dataset",
+    "title": "Example Dataset",
+    "notes": "This is an example dataset with detailed information",
+    "owner_org": "example-org",
+    "metadata_created": "2024-01-01T10:00:00Z",
+    "metadata_modified": "2024-01-15T15:30:00Z",
+    "author": "John Doe",
+    "author_email": "john@example.com",
+    "maintainer": "Jane Smith",
+    "maintainer_email": "jane@example.com",
+    "license_id": "cc-by",
+    "license_title": "Creative Commons Attribution",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "state": "active",
+    "version": "1.0",
+    "url": "http://example.com",
+    "notes_rendered": "<p>This is an example dataset with detailed information</p>",
+    "tags": [
+      {
+        "vocabulary_id": null,
+        "display_name": "example",
+        "name": "example",
+        "id": "tag-1"
+      },
+      {
+        "vocabulary_id": null,
+        "display_name": "data",
+        "name": "data",
+        "id": "tag-2"
+      }
+    ],
+    "tracking_summary": {
+      "total": 150,
+      "recent": 25
+    },
+    "mimetype_inner": null,
+    "mimetype": null,
+    "cache_url": null,
+    "name": "example-dataset",
+    "isopen": true,
+    "url": null,
+    "state": "active",
+    "version": "1.0",
+    "license_id": "cc-by",
+    "type": "dataset",
+    "resources": [
+      {
+        "id": "res-1",
+        "name": "example-resource.csv",
+        "url": "http://example.com/resource.csv",
+        "format": "CSV",
+        "description": "Example CSV resource",
+        "size": 10240,
+        "mimetype": "text/csv",
+        "mimetype_inner": null,
+        "hash": "abc123def456",
+        "description": "This is an example resource",
+        "created": "2024-01-01T10:00:00Z",
+        "last_modified": "2024-01-15T15:30:00Z",
+        "state": "active",
+        "package_id": "pkg-1",
+        "resource_type": "file",
+        "position": 0,
+        "cache_url": null,
+        "cache_last_updated": null,
+        "webstore_last_updated": null,
+        "webstore_url": null
+      },
+      {
+        "id": "res-2",
+        "name": "example-data.json",
+        "url": "http://example.com/data.json",
+        "format": "JSON",
+        "description": "Example JSON resource",
+        "size": 5120,
+        "mimetype": "application/json",
+        "created": "2024-01-05T10:00:00Z",
+        "last_modified": "2024-01-10T15:30:00Z",
+        "state": "active",
+        "package_id": "pkg-1",
+        "resource_type": "file",
+        "position": 1
+      }
+    ],
+    "num_resources": 2,
+    "num_tags": 2,
+    "organization": {
+      "id": "org-1",
+      "name": "example-org",
+      "title": "Example Organization",
+      "type": "organization",
+      "description": "This is an example organization",
+      "image_url": "",
+      "created": "2023-01-01T10:00:00Z",
+      "is_organization": true,
+      "approval_status": "approved",
+      "state": "active"
+    },
+    "author": "John Doe",
+    "author_email": "john@example.com",
+    "maintainer": "Jane Smith",
+    "maintainer_email": "jane@example.com",
+    "state": "active",
+    "version": "1.0",
+    "license_id": "cc-by",
+    "license_title": "Creative Commons Attribution",
+    "type": "dataset",
+    "private": false,
+    "tracking_summary": {
+      "total": 150,
+      "recent": 25
+    }
+  }
+}

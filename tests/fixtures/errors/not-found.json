@@ -1,0 +1,9 @@
+{
+  "success": false,
+  "error": {
+    "__type": "Not Found Error",
+    "message": "Not found",
+    "status": 404,
+    "__input": "resource_id"
+  }
+}

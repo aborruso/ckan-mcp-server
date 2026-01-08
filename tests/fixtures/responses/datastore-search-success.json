@@ -1,0 +1,59 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=datastore_search",
+  "success": true,
+  "result": {
+    "resource_id": "res-1",
+    "fields": [
+      {
+        "id": "_id",
+        "type": "int4"
+      },
+      {
+        "id": "name",
+        "type": "text"
+      },
+      {
+        "id": "value",
+        "type": "numeric"
+      },
+      {
+        "id": "date",
+        "type": "timestamp"
+      }
+    ],
+    "records": [
+      {
+        "_id": 1,
+        "name": "Record 1",
+        "value": 100.5,
+        "date": "2024-01-01T10:00:00Z"
+      },
+      {
+        "_id": 2,
+        "name": "Record 2",
+        "value": 200.75,
+        "date": "2024-01-02T11:30:00Z"
+      },
+      {
+        "_id": 3,
+        "name": "Record 3",
+        "value": 150.25,
+        "date": "2024-01-03T09:15:00Z"
+      }
+    ],
+    "records_format": "objects",
+    "total": 3,
+    "filters": {},
+    "q": "",
+    "limit": 100,
+    "offset": 0,
+    "fields_order": [
+      "_id",
+      "name",
+      "value",
+      "date"
+    ],
+    "include_total": true,
+    "total_estimation_threshold": null
+  }
+}

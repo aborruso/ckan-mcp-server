@@ -1,0 +1,80 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=package_search",
+  "success": true,
+  "result": {
+    "count": 100,
+    "facets": {
+      "res_format": [
+        "CSV",
+        "JSON",
+        "XML"
+      ],
+      "organization": [
+        "example-org",
+        "data-gov"
+      ]
+    },
+    "results": [
+      {
+        "id": "pkg-1",
+        "name": "example-dataset",
+        "title": "Example Dataset",
+        "notes": "This is an example dataset",
+        "owner_org": "example-org",
+        "metadata_created": "2024-01-01T10:00:00Z",
+        "metadata_modified": "2024-01-15T15:30:00Z",
+        "author": "John Doe",
+        "author_email": "john@example.com",
+        "maintainer": "Jane Smith",
+        "maintainer_email": "jane@example.com",
+        "license_id": "cc-by",
+        "license_title": "Creative Commons Attribution",
+        "state": "active",
+        "version": "1.0",
+        "url": "http://example.com",
+        "resources": [
+          {
+            "id": "res-1",
+            "name": "example-resource.csv",
+            "url": "http://example.com/resource.csv",
+            "format": "CSV",
+            "description": "Example CSV resource",
+            "size": 10240,
+            "mimetype": "text/csv",
+            "created": "2024-01-01T10:00:00Z",
+            "last_modified": "2024-01-15T15:30:00Z"
+          }
+        ]
+      },
+      {
+        "id": "pkg-2",
+        "name": "another-dataset",
+        "title": "Another Dataset",
+        "notes": "This is another example dataset",
+        "owner_org": "data-gov",
+        "metadata_created": "2024-02-01T10:00:00Z",
+        "metadata_modified": "2024-02-15T15:30:00Z",
+        "author": "Alice Brown",
+        "author_email": "alice@example.com",
+        "license_id": "odc-by",
+        "license_title": "Open Data Commons Attribution License",
+        "state": "active",
+        "version": "2.0",
+        "resources": []
+      }
+    ],
+    "search_facets": {
+      "res_format": {
+        "CSV": {
+          "count": 80,
+          "display_name": "CSV"
+        },
+        "JSON": {
+          "count": 15,
+          "display_name": "JSON"
+        }
+      }
+    }
+  },
+  "sort": "score desc, metadata_modified desc"
+}
