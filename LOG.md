@@ -2,6 +2,24 @@
 
 ## 2026-01-08
 
+### Version 0.2.0 🎉
+- **Test Suite**: Added comprehensive automated testing infrastructure
+  - **79 tests total**: 100% passing
+  - **Unit tests** (25): formatting utilities, HTTP client
+  - **Integration tests** (54): all 7 CKAN API tools
+  - **Coverage**: vitest with v8 coverage support
+  - Test fixtures for all CKAN endpoints + error scenarios
+  - Scripts: `npm test`, `npm run test:watch`, `npm run test:coverage`
+- **Documentation**: Translated to English
+  - README.md: comprehensive project overview
+  - EXAMPLES.md: detailed usage patterns
+  - CLAUDE.md: AI assistant instructions
+- **OpenSpec**: Added change proposals
+  - Test suite implementation proposal
+  - Documentation translation spec
+
+## 2026-01-08 (earlier)
+
 ### Code Refactoring ✨
 - **Major refactoring**: Ristrutturato codebase da file monolitico a struttura modulare
   - **Before**: 1 file (`src/index.ts`) - 1021 righe
