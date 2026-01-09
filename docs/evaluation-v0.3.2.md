@@ -95,8 +95,8 @@ This evaluation focuses on what is verifiable from the repository at `/home/abor
 
 ### Immediate
 1. Verify npm publication and GitHub release; record evidence (links, release tag, npm page).
-2. Update README test count (README says 101; current `npm test` is 105).
-3. Confirm README installation options match the intended 3 paths.
+2. ✅ Update README test count to 113 (completed 2026-01-09).
+3. ✅ Confirm README installation options match the intended 3 paths (completed 2026-01-09).
 
 ### Short Term
 4. Keep coverage results updated after test additions.
@@ -121,13 +121,11 @@ This evaluation focuses on what is verifiable from the repository at `/home/abor
 - [ ] Package size reported by npm (or `npm pack` locally)
 - [x] `npm test` passes (113 tests, 2026-01-09)
 - [x] `npm run test:coverage` passes (2026-01-09)
-- [ ] README contains 3 installation options
+- [x] README contains 3 installation options
 
 ## Conclusion (Evidence-based)
 
 Locally, the project is packaged and structured like a publishable npm CLI with solid documentation and test tooling. The step from “ready for distribution” to “publicly distributed” requires external verification. Once those checks are confirmed, the original distribution claims can be reinstated with citations.
-
-
 
 **Date**: 2026-01-09
 **Evaluator**: Codex (local review)
