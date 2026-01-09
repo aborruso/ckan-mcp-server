@@ -57,6 +57,7 @@ The server will be available at `http://localhost:3000/mcp`
 ## Claude Desktop Configuration
 
 Configuration file location:
+
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
@@ -231,6 +232,7 @@ Some of the main compatible portals:
 Some CKAN portals expose non-standard web URLs for viewing datasets or organizations. To support those cases, this project ships with `src/portals.json`, which maps known portal API URLs (and aliases) to custom view URL templates.
 
 When generating a dataset or organization view link, the server:
+
 - matches the `server_url` against `api_url` and `api_url_aliases` in `src/portals.json`
 - uses the portal-specific `dataset_view_url` / `organization_view_url` template when available
 - falls back to the generic defaults (`{server_url}/dataset/{name}` and `{server_url}/organization/{name}`)
@@ -284,6 +286,7 @@ ckan_package_search({
 ```
 
 **Techniques used**:
+
 - `sanità~2` - Fuzzy search with edit distance 2 (finds "sanita", "sanitá", minor typos)
 - `^3` - Boosts title matches 3x higher in relevance scoring
 - `NOW-6MONTHS` - Dynamic date math for rolling time windows
@@ -305,6 +308,7 @@ ckan_package_search({
 ```
 
 **Techniques used**:
+
 - `"inquinamento aria"~5` - Proximity search (words within 5 positions)
 - `~3` - Tighter proximity for title matches
 - `NOT (title:acqua OR title:mare)` - Exclude water/sea datasets
@@ -327,6 +331,7 @@ ckan_package_search({
 ```
 
 **Techniques used**:
+
 - `regione*` - Wildcard matches all regional organizations
 - `[5 TO *]` - Inclusive range (5 or more resources)
 - `res_format:*` - Field existence check (has at least one resource format)
@@ -349,6 +354,7 @@ ckan_package_search({
 ```
 
 **Techniques used**:
+
 - `{9 TO 51}` - Exclusive bounds (10-50 resources, excluding 9 and 51)
 - `[2025-07-01T00:00:00Z TO 2025-12-31T23:59:59Z]` - Explicit date range
 - Combined organization wildcard with title search
@@ -364,9 +370,11 @@ ckan_package_search({
 **Proximity**: `"phrase"~N` (words within N positions)
 **Boosting**: `^N` (relevance multiplier), e.g., `title:water^2`
 **Ranges**:
-  - Inclusive: `[a TO b]`, e.g., `num_resources:[5 TO 10]`
-  - Exclusive: `{a TO b}`, e.g., `num_resources:{0 TO 100}`
-  - Open-ended: `[2024-01-01T00:00:00Z TO *]`
+
+- Inclusive: `[a TO b]`, e.g., `num_resources:[5 TO 10]`
+- Exclusive: `{a TO b}`, e.g., `num_resources:{0 TO 100}`
+- Open-ended: `[2024-01-01T00:00:00Z TO *]`
+
 **Date Math**: `NOW`, `NOW-1YEAR`, `NOW-6MONTHS`, `NOW-7DAYS`, `NOW/DAY`
 **Field Existence**: `field:*` (field exists), `NOT field:*` (field missing)
 
@@ -419,6 +427,7 @@ npm run test:coverage
 ```
 
 Test coverage target is 80%. Current test suite includes:
+
 - Unit tests for utility functions (formatting, HTTP)
 - Integration tests for MCP tools with mocked CKAN API responses
 - Mock fixtures for CKAN API success and error scenarios
@@ -500,12 +509,11 @@ MIT License - See LICENSE.txt file for complete details.
 - **CKAN**: https://ckan.org/
 - **CKAN API Documentation**: https://docs.ckan.org/en/latest/api/
 - **MCP Protocol**: https://modelcontextprotocol.io/
-- **onData**: https://www.ondata.it/
-- **dati.gov.it**: https://www.dati.gov.it/opendata/
 
 ## Support
 
 For issues or questions:
+
 - Open an issue on GitHub
 - Contact onData: https://www.ondata.it/
 
