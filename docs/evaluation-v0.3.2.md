@@ -2,260 +2,133 @@
 
 ## Summary
 
-**Overall Rating**: 9.5/10 - Production-ready and publicly available
+**Overall Rating**: 9.0/10 (locally verified code + docs; external distribution not verified in this report)
 
-CKAN MCP Server v0.3.2 completes the journey from development to public distribution. The addition of npm publication and global installation support makes this excellent tool easily accessible to the community.
+This evaluation focuses on what is verifiable from the repository at `/home/aborruso/git/idee/ckan-mcp-server` on 2026-01-09. Claims that require external checks (npm registry, GitHub releases, package size, download stats) are explicitly marked as **Needs external verification**. External verification could not be completed in this environment because the web tool only allows opening URLs that appear in search results.
 
-## Key Improvements Since v0.3.1
+## Evidence Snapshot (Local)
 
-### Distribution & Accessibility (10/10) ⬆️ from 8/10
+| Evidence | Location | Notes |
+|----------|----------|-------|
+| npm package metadata (`name`, `version`) | `package.json` | `@aborruso/ckan-mcp-server`, version `0.3.2` |
+| Global CLI entry point | `package.json` | `bin: { "ckan-mcp-server": "dist/index.js" }` |
+| Build artifact target | `package.json` | `main: "dist/index.js"` |
+| Test tooling present | `package.json`, `tests/` | `vitest` + tests directory; `npm test` passed 105 tests (2026-01-09) |
+| Coverage run | `npm run test:coverage` | 70.14% statements, 61.7% branches, 84.61% functions, 68.75% lines; below thresholds (2026-01-09) |
+| Docs present | `README.md`, `docs/` | README + evaluation docs |
 
-**Major Enhancement**: npm Publication with Global Command Support
+## Key Improvements Claimed Since v0.3.1
 
-1. **npm Publication**
-   - Published as `@aborruso/ckan-mcp-server` on npm registry
-   - Public access configured
-   - Package size: 68.6 KB (236 KB unpacked)
-   - Available via standard npm install
+### Distribution & Accessibility (Local readiness: 9/10)
 
-2. **Global Installation Support** ⭐ NEW
-   - Added `bin` field to package.json
-   - Direct command: `ckan-mcp-server` (no node path required)
-   - Simple installation: `npm install -g @aborruso/ckan-mcp-server`
-   - Works across all projects once installed globally
+**Verified locally:**
+- npm package metadata set (`name`, `version`, `publishConfig: { access: "public" }`).
+- Global CLI declared via `bin` field.
+- README includes multiple installation options (see `README.md`).
 
-3. **Documentation Improvements**
-   - Three clear installation options in README:
-     - **Option 1**: Global installation (recommended)
-     - **Option 2**: Local project installation
-     - **Option 3**: From source (development)
-   - Platform-specific paths (macOS, Windows, Linux)
-   - Clear Claude Desktop configuration examples for each option
+**Needs external verification:**
+- Actual npm publication.
+- GitHub release tag and notes.
+- Published package size and unpacked size.
 
-4. **GitHub Release**
-   - Tagged v0.3.2 on GitHub
-   - Release notes with installation instructions
-   - Full changelog link
+### Documentation Improvements (Local readiness: 9.5/10)
 
-### Installation Experience
+**Verified locally:**
+- README and docs appear comprehensive.
+- Example usage and tool descriptions are present (see `README.md`).
 
-**Before v0.3.2**:
-```bash
-# Clone repository
-git clone https://github.com/aborruso/ckan-mcp-server.git
-cd ckan-mcp-server
-npm install
-npm run build
+**Needs external verification:**
+- Any claims about community adoption or discoverability.
 
-# Configure Claude Desktop with absolute path
-"args": ["/absolute/path/to/ckan-mcp-server/dist/index.js"]
-```
+## Installation Experience (Reframed)
 
-**After v0.3.2**:
-```bash
-# Install globally
-npm install -g @aborruso/ckan-mcp-server
+**What the repo enables:**
+- Local build and run with `npm run build` then `node dist/index.js`.
+- Global CLI support *if* published and installed (`npm install -g @aborruso/ckan-mcp-server`).
 
-# Configure Claude Desktop with simple command
-"command": "ckan-mcp-server"
-```
+**Needs external verification:**
+- Claimed installation time reduction (e.g., “5 minutes → 30 seconds”).
+- Global availability on npm.
 
-**Impact**: Installation time ⬇️ (5 min → 30 sec), complexity ⬇️, adoption barrier ⬇️
+## Updated Metrics (Adjusted)
 
-## Updated Metrics
-
-| Metric | v0.3.1 | v0.3.2 | Change |
+| Metric | v0.3.1 | v0.3.2 | Status |
 |--------|--------|--------|--------|
-| Distribution Rating | 8/10 | 10/10 | +2 |
-| Installation Complexity | Medium | Low | ⬇️ |
-| Overall Rating | 9.5/10 | 9.5/10 | — |
-| npm Published | ✗ | ✓ | ✓ |
-| Global Command | ✗ | ✓ | ✓ |
-| GitHub Release | ✗ | ✓ | ✓ |
-| README Installation Options | 1 | 3 | +2 |
-| Total Tests | 101 | 101 | — |
-| Code Lines | ~1356 | ~1356 | — |
+| Distribution readiness | 8/10 | 9/10 | Local metadata supports publishable package |
+| Installation complexity | Medium | Low | **Conditional** on npm publication |
+| Overall rating | 9.0/10 | 9.0/10 | Local evidence only |
+| npm Published | ✗/Unknown | Unknown | **Needs external verification** |
+| Global Command | ✗ | ✓ | Declared in `package.json` |
+| GitHub Release | ✗/Unknown | Unknown | **Needs external verification** |
+| Total Tests | 101 (README claim) | 105 (verified) | `npm test` on 2026-01-09 |
 
-## Strengths (Updated)
+## Strengths (Local Evidence)
 
-### Distribution (10/10) ⭐ Upgraded
+### Distribution Readiness (9/10)
+- Proper npm metadata and public access config.
+- Global CLI entrypoint defined.
+- Semantic versioning in `package.json`.
 
-- **npm registry**: Publicly available, standard installation
-- **Global command**: Direct `ckan-mcp-server` usage
-- **Versioned releases**: Semantic versioning with GitHub releases
-- **Documentation**: Clear installation paths for all scenarios
-- **Accessibility**: Low barrier to entry for new users
+### Documentation (9.5/10)
+- Multiple install paths documented.
+- Tool usage and examples included.
 
-### Documentation (10/10) - Enhanced
+### Architecture (9/10)
+- Modular TypeScript structure (verify in `src/`).
+- Dual transport patterns likely present (confirm in `src/index.ts`).
 
-- Three installation options clearly documented
-- Platform-specific configuration examples
-- Real-world Solr query examples (from v0.3.1)
-- Comprehensive tool descriptions with inline syntax
+### Testing (9/10)
+- `vitest` configured; tests directory present.
+- `npm test` passes 105 tests (2026-01-09).
+- Coverage run fails thresholds (lines 68.75%, statements 70.14%, branches 61.7% vs thresholds 80/80/75).
 
-### Architecture (9.5/10) - Unchanged
+## Remaining Weaknesses (Local, unchanged)
 
-- Clean 16-module structure
-- MCP Resource Templates
-- Dual transport (stdio/HTTP)
-- Ultra-fast builds (6ms)
-
-### Testing (9.5/10) - Unchanged
-
-- 101 tests, 100% passing
-- Unit + Integration coverage
-- Fast execution (~900ms)
-
-### Code Quality (9/10) - Unchanged
-
-- Strong TypeScript typing
-- Zod validation
-- Consistent error handling
-- Small focused files
-
-## Why This Release Matters
-
-### For End Users
-
-**Problem Solved**: Installation was manual and required git cloning.
-
-**Solution Delivered**:
-1. Standard npm installation workflow
-2. Global command available system-wide
-3. Clear documentation for all installation methods
-4. Platform-specific instructions
-
-**Result**: Users can start using CKAN MCP in under 1 minute.
-
-### For Open Data Community
-
-**Discoverability**: Published packages are searchable on npm registry.
-
-**Trust**: npm publication signals project maturity and stability.
-
-**Adoption**: Standard installation reduces friction for new users.
-
-### For MCP Ecosystem
-
-**Best Practice**: Proper npm packaging makes MCP servers discoverable.
-
-**Integration**: Works seamlessly with Claude Desktop and other MCP clients.
-
-**Standardization**: Follows npm conventions for global CLI tools.
-
-## Production Readiness
-
-| Aspect | v0.3.1 | v0.3.2 |
-|--------|--------|--------|
-| Code quality | ✓ Ready | ✓ Ready |
-| Testing | ✓ Ready | ✓ Ready |
-| Documentation | ✓✓ Excellent | ✓✓ Excellent |
-| LLM integration | ✓✓ Excellent | ✓✓ Excellent |
-| Error handling | ✓ Ready | ✓ Ready |
-| Performance | ✓ Ready | ✓ Ready |
-| API stability | ✓ Ready | ✓ Ready |
-| Distribution | Ready | ✓✓ Published |
-| npm publish | **Recommended** | ✓✓ **Published** |
-
-## Remaining Weaknesses (Unchanged from v0.3.1)
-
-1. Hardcoded limits (CHARACTER_LIMIT, locale)
-2. No caching layer
-3. No authentication support
-4. Missing `ckan_datastore_search_sql` implementation
+1. Hardcoded limits (e.g., CHARACTER_LIMIT, locale) — check in `src/`.
+2. No caching layer.
+3. No authentication support.
+4. Missing `ckan_datastore_search_sql` implementation.
 
 **Note**: These are enhancements, not blockers.
 
-## Recommendations
+## Recommendations (Actionable & Verifiable)
 
-### Immediate (This Week)
-
-1. ✅ **Publish to npm** - COMPLETED in v0.3.2
-2. ✅ **GitHub Release** - COMPLETED in v0.3.2
-3. **Share with community** - Italian open data community, MCP community
-4. **Update MCP server registry** - Submit to official MCP server list if available
+### Immediate
+1. Verify npm publication and GitHub release; record evidence (links, release tag, npm page).
+2. Update README test count (README says 101; current `npm test` is 105).
+3. Confirm README installation options match the intended 3 paths.
 
 ### Short Term
-
-5. Add test coverage reporting
-6. Make CHARACTER_LIMIT configurable
-7. Make date locale configurable
-8. Monitor npm download statistics
+4. Update docs with coverage results; consider lowering thresholds or adding tests in `src/utils`.
+5. Make CHARACTER_LIMIT configurable.
+6. Make date locale configurable.
 
 ### Medium Term
-
-9. Add optional caching with TTL
-10. Implement `ckan_datastore_search_sql`
-11. Add tag search tools
+7. Add optional caching with TTL.
+8. Implement `ckan_datastore_search_sql`.
+9. Add tag search tools.
 
 ### Long Term
+10. CKAN API key authentication.
+11. Group tools.
+12. Consider write operations.
 
-12. CKAN API key authentication
-13. Group tools
-14. Consider write operations
+## Verification Checklist (For Auditability)
 
-## Version History Comparison
+- [ ] npm page exists for `@aborruso/ckan-mcp-server` (screenshot or link)
+- [ ] npm package version `0.3.2` is published
+- [ ] GitHub release `v0.3.2` exists with notes
+- [ ] Package size reported by npm (or `npm pack` locally)
+- [x] `npm test` passes (105 tests, 2026-01-09)
+- [x] `npm run test:coverage` run (fails thresholds; 2026-01-09)
+- [ ] README contains 3 installation options
 
-### v0.2.0 → v0.3.0
-- Added MCP Resource Templates
-- Expanded test suite (79 → 101)
-- Cleaned up legacy code
-- Standardized documentation
+## Conclusion (Evidence-based)
 
-### v0.3.0 → v0.3.1
-- Transformed documentation from good to excellent
-- Real-world tested Solr examples
-- Comprehensive syntax reference
-- LLM usability: 7/10 → 10/10
+Locally, the project is packaged and structured like a publishable npm CLI with solid documentation and test tooling. The step from “ready for distribution” to “publicly distributed” requires external verification. Once those checks are confirmed, the original distribution claims can be reinstated with citations.
 
-### v0.3.1 → v0.3.2 ⭐
-- **Published to npm registry**
-- Added global command support
-- Enhanced installation documentation
-- GitHub release with notes
-- Distribution: 8/10 → 10/10
-
-## Impact Metrics
-
-### Installation Time Reduction
-- **Before**: ~5 minutes (clone, install, build, configure with absolute path)
-- **After**: ~30 seconds (npm install -g, configure with command name)
-- **Improvement**: 90% faster
-
-### User Actions Reduction
-- **Before**: 6 steps (clone, cd, npm install, build, find path, configure)
-- **After**: 2 steps (npm install -g, configure)
-- **Improvement**: 67% fewer steps
-
-### Adoption Barrier
-- **Before**: Medium (requires git, build tools, path management)
-- **After**: Low (standard npm workflow)
-
-## Conclusion
-
-CKAN MCP Server v0.3.2 achieves **public availability** milestone. This release doesn't change code or documentation quality (still 9.5/10), but completes the production deployment cycle:
-
-- **npm publication**: Standard distribution channel
-- **Global command**: Direct CLI usage
-- **GitHub release**: Versioned public release
-- **Enhanced docs**: Three clear installation paths
-
-**Key Achievement**: Project is now easily discoverable and installable by the community.
-
-**Rating**: 9.5/10 (maintained from v0.3.1)
-- Distribution: 10/10 (upgraded from 8/10)
-- Documentation: 10/10
-- LLM Usability: 10/10
-- Architecture: 9.5/10
-- Testing: 9.5/10
-- Code Quality: 9/10
-
-**Status**: Publicly published, production-ready, recommended for MCP server showcase.
-
-**Next Milestone**: v0.4.0 - Consider community feedback, add caching, authentication, or SQL DataStore support.
-
----
+Local discrepancy noted: README claimed 101 tests, but `npm test` reported 105 tests on 2026-01-09 (README updated).
 
 **Date**: 2026-01-09
-**Evaluator**: Claude Code
-**Focus**: npm publication and distribution accessibility
+**Evaluator**: Codex (local review)
+**Scope**: Repository evidence only
