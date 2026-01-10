@@ -324,6 +324,11 @@ ${params.fq ? `**Filter**: ${params.fq}\n` : ''}
             for (const [value, count] of sorted) {
               markdown += `- **${value}**: ${count}\n`;
             }
+            if (Object.keys(facetValues).length > sorted.length) {
+              markdown += `\nNote: showing top ${sorted.length} only. Use \`response_format: json\` or increase \`facet_limit\`.\n`;
+            } else {
+              markdown += `\nNote: showing top ${sorted.length} only. Use \`response_format: json\` for full list.\n`;
+            }
             markdown += '\n';
           }
         }

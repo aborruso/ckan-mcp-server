@@ -77,16 +77,76 @@ Returns:
         }
 
         // Normal case: list organizations
-        const result = await makeCkanRequest<any>(
-          params.server_url,
-          'organization_list',
-          {
-            all_fields: params.all_fields,
-            sort: params.sort,
-            limit: params.limit,
-            offset: params.offset
+        let result: any;
+        try {
+          result = await makeCkanRequest<any>(
+            params.server_url,
+            'organization_list',
+            {
+              all_fields: params.all_fields,
+              sort: params.sort,
+              limit: params.limit,
+              offset: params.offset
+            }
+          );
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          if (message.includes('CKAN API error (500)')) {
+            const searchResult = await makeCkanRequest<any>(
+              params.server_url,
+              'package_search',
+              {
+                rows: 0,
+                'facet.field': JSON.stringify(['organization']),
+                'facet.limit': -1
+              }
+            );
+
+            const items = searchResult.search_facets?.organization?.items || [];
+            const sortValue = params.sort?.toLowerCase() ?? 'name asc';
+            const sortedItems = [...items].sort((a: any, b: any) => {
+              if (sortValue.includes('package_count') || sortValue.includes('count')) {
+                return b.count - a.count;
+              }
+              if (sortValue.includes('name desc')) {
+                return String(b.name).localeCompare(String(a.name));
+              }
+              return String(a.name).localeCompare(String(b.name));
+            });
+
+            const pagedItems = sortedItems.slice(params.offset, params.offset + params.limit);
+            const organizations = pagedItems.map((item: any) => ({
+              id: item.name,
+              name: item.name,
+              title: item.display_name || item.name,
+              package_count: item.count
+            }));
+
+            if (params.response_format === ResponseFormat.JSON) {
+              const output = { count: items.length, organizations };
+              return {
+                content: [{ type: "text", text: truncateText(JSON.stringify(output, null, 2)) }],
+                structuredContent: output
+              };
+            }
+
+            let markdown = `# CKAN Organizations\n\n`;
+            markdown += `**Server**: ${params.server_url}\n`;
+            markdown += `**Total**: ${items.length}\n`;
+            markdown += `\nNote: organization_list returned 500; using package_search facets.\n\n`;
+            for (const org of organizations) {
+              markdown += `## ${org.title || org.name}\n\n`;
+              markdown += `- **Name**: \`${org.name}\`\n`;
+              markdown += `- **Datasets**: ${org.package_count || 0}\n`;
+              markdown += `- **Link**: ${getOrganizationViewUrl(params.server_url, org)}\n\n`;
+            }
+
+            return {
+              content: [{ type: "text", text: truncateText(markdown) }]
+            };
           }
-        );
+          throw error;
+        }
 
         if (params.response_format === ResponseFormat.JSON) {
           const output = Array.isArray(result)

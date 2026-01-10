@@ -2,6 +2,12 @@
 
 ## 2026-01-10
 
+### Version 0.4.8 - Organization list fallback
+- **Fix**: On CKAN 500, fall back to `package_search` facets for org counts
+- **Output**: Facet lists show top 10; suggest `response_format: json` and `facet_limit`
+
+## 2026-01-10
+
 ### Web GUI intelligent tool selection
 - **MCP tool awareness**: Gemini now selects appropriate tool from 15 available
   - Loads tool list on startup via `tools/list`
