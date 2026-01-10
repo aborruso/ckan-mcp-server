@@ -619,7 +619,14 @@ ${toolList}
 
 CRITICAL RULES FOR TOOL SELECTION:
 1. If user asks about ORGANIZATIONS (like "which organizations", "organizations with most datasets", "list organizations"):
-   → Use ckan_organization_list with all_fields=true and sort="package_count desc"
+   → Use ckan_organization_list with ONLY these parameters:
+   {
+     "server_url": "CKAN_SERVER",
+     "all_fields": true,
+     "limit": 100,
+     "response_format": "json"
+   }
+   Do NOT use sort parameter - results will be sorted client-side by package_count
 
 2. If user asks about DATASETS (like "find datasets about X", "datasets on topic Y"):
    → Use ckan_package_search or ckan_find_relevant_datasets
@@ -638,7 +645,7 @@ Respond ONLY with JSON in this exact format:
   }
 }
 
-Always include server_url parameter.
+Always include server_url and response_format="json".
 Use conversation context to refine queries.`;
 
         const contents = [
@@ -775,7 +782,15 @@ Use conversation context to refine queries.`;
           // Handle different tool types
           if (tool.includes("organization")) {
             // Organization tools
-            const items = data.results || data || [];
+            let items = data.results || data || [];
+
+            // Sort by package_count descending (client-side)
+            items = items.sort((a, b) => {
+              const countA = a.package_count || 0;
+              const countB = b.package_count || 0;
+              return countB - countA;
+            });
+
             const summary = document.createElement("p");
             summary.className = "text-sm font-medium mb-1";
             summary.style.color = "var(--primary)";
