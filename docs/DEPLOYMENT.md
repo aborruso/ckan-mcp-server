@@ -81,6 +81,8 @@ This installs:
 - Project dependencies (@modelcontextprotocol/sdk, axios, zod, etc.)
 - Wrangler CLI (local copy for reproducible builds)
 
+Note: Packaging exclusions are managed via `.npmignore`.
+
 ---
 
 ### Step 5: Test Locally (Optional but Recommended)
