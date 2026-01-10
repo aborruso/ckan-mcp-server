@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CKAN Open Data Explorer</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f7f9;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --accent: #2563eb;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 20px 80px;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+      h1 {
+        font-size: clamp(2.2rem, 5vw, 3.1rem);
+        margin-bottom: 12px;
+      }
+      p.lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        margin-top: 32px;
+      }
+      .card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      }
+      .card h2 {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+      }
+      .card p {
+        color: var(--muted);
+      }
+      .cta {
+        margin-top: 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-align: center;
+      }
+      .cta a {
+        display: inline-block;
+        padding: 12px 22px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .meta {
+        margin-top: 32px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>CKAN Open Data Explorer</h1>
+        <p class="lead">
+          Interfaccia conversazionale per esplorare portali CKAN con linguaggio naturale e tool MCP.
+        </p>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Ricerca semplice</h2>
+          <p>Trova dataset e risorse senza conoscere le API CKAN o la sintassi dei portali.</p>
+        </article>
+        <article class="card">
+          <h2>Esperienza guidata</h2>
+          <p>Chat fluida con suggerimenti, rendering markdown e feedback sugli errori.</p>
+        </article>
+        <article class="card">
+          <h2>Tool MCP</h2>
+          <p>Il frontend orchestration chiama il server MCP per ottenere dati aggiornati.</p>
+        </article>
+        <article class="card">
+          <h2>Configurabile</h2>
+          <p>Endpoint MCP e chiave Gemini impostabili dall’utente per ogni ambiente.</p>
+        </article>
+      </section>
+
+      <section class="cta">
+        <a href="https://ckan-mcp-server.andy-pr.workers.dev/mcp" target="_blank" rel="noreferrer">
+          Endpoint MCP di riferimento
+        </a>
+        <p class="meta">Pagina statica di presentazione per il futuro web GUI.</p>
+      </section>
+    </main>
+  </body>
+</html>
