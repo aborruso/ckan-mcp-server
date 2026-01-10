@@ -372,6 +372,234 @@ wrangler delete ckan-mcp-server
 
 ---
 
+## Complete Release Workflow
+
+When releasing a new version with code changes, follow all these steps to ensure complete deployment across GitHub, npm, and Cloudflare.
+
+### Step 1: Update Version
+
+Edit `package.json` and bump version:
+
+```json
+{
+  "version": "0.5.0"
+}
+```
+
+### Step 2: Update Changelog
+
+Add entry to `LOG.md` with current date (YYYY-MM-DD format) at the top:
+
+```markdown
+## 2026-01-XX
+
+### Version 0.5.0 - Feature Name
+
+- **New feature**: Description
+- **Changes**: List of changes
+- **Files modified**: List key files
+- **No breaking changes**: Confirm backward compatibility
+```
+
+### Step 3: Commit Changes
+
+```bash
+git add .
+git commit -m "Add feature name (v0.5.0)
+
+- Detailed description of changes
+- List key improvements
+- Note any breaking changes (if any)
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+```
+
+### Step 4: Push to GitHub
+
+```bash
+git push origin main
+```
+
+Verify: Check https://github.com/aborruso/ckan-mcp-server commits
+
+### Step 5: Create Git Tag
+
+```bash
+git tag -a v0.5.0 -m "Feature name
+
+- Key feature 1
+- Key feature 2
+- Key feature 3
+- No breaking changes"
+```
+
+### Step 6: Push Tag
+
+```bash
+git push origin v0.5.0
+```
+
+Verify: Tag appears in https://github.com/aborruso/ckan-mcp-server/tags
+
+### Step 7: Create GitHub Release
+
+```bash
+gh release create v0.5.0 \
+  --title "v0.5.0 - Feature Name" \
+  --notes "## What's New
+
+### Features
+- Feature 1 description
+- Feature 2 description
+
+### Changes
+- Change 1
+- Change 2
+
+### Documentation
+- Updated docs/...
+- Added examples/...
+
+### No Breaking Changes
+- All existing functionality preserved
+- Backward compatible
+
+**Full Changelog**: https://github.com/aborruso/ckan-mcp-server/compare/v0.4.0...v0.5.0"
+```
+
+Verify: Release appears as "Latest" at https://github.com/aborruso/ckan-mcp-server/releases
+
+### Step 8: Publish to npm
+
+```bash
+npm publish
+```
+
+Verify:
+- Check https://www.npmjs.com/package/@aborruso/ckan-mcp-server
+- Version updated
+- Package installable: `npm install @aborruso/ckan-mcp-server`
+
+### Step 9: Deploy to Cloudflare Workers
+
+**Only if** code affecting Workers was changed (src/worker.ts, src/tools/*, etc.):
+
+```bash
+npm run deploy
+```
+
+Verify:
+- Deployment succeeds
+- New version ID shown
+- Test endpoint: `curl https://ckan-mcp-server.andy-pr.workers.dev/health`
+
+---
+
+## Release Checklist
+
+Use this checklist to ensure nothing is missed:
+
+### Pre-Release
+- [ ] All tests passing: `npm test`
+- [ ] Code builds successfully: `npm run build`
+- [ ] Workers build works: `npm run build:worker`
+- [ ] Local testing complete: `npm run dev:worker`
+
+### Version Update
+- [ ] Version bumped in `package.json`
+- [ ] `LOG.md` updated with changes
+- [ ] `CLAUDE.md` updated if architecture changed
+- [ ] `README.md` updated if features added
+
+### Git Operations
+- [ ] Changes committed with descriptive message
+- [ ] Pushed to GitHub main branch
+- [ ] Git tag created (format: v0.X.Y)
+- [ ] Tag pushed to GitHub
+
+### Publishing
+- [ ] GitHub Release created with notes
+- [ ] npm package published (check npmjs.com)
+- [ ] Cloudflare Workers deployed (if code changed)
+
+### Verification
+- [ ] GitHub shows correct "Latest" release
+- [ ] npm shows updated version
+- [ ] Workers endpoint responds correctly
+- [ ] Claude Desktop config works (if MCP changes)
+
+### Communication (Optional)
+- [ ] Update project README with new features
+- [ ] Announce on social media (if major release)
+- [ ] Notify users of breaking changes (if any)
+
+---
+
+## When to Publish Where
+
+Not every change requires publishing to all platforms:
+
+### Always Required
+- **GitHub**: Commit + Push (every change)
+
+### Sometimes Required
+- **Git Tag**: Only for versioned releases (v0.X.Y)
+- **GitHub Release**: Only for public releases (creates "Latest" badge)
+- **npm**: Only when users need updated package
+- **Cloudflare**: Only when Workers code changed
+
+### Decision Matrix
+
+| Change Type | GitHub Commit | Git Tag | GitHub Release | npm Publish | Cloudflare Deploy |
+|------------|---------------|---------|----------------|-------------|-------------------|
+| Bug fix in tools | ✅ | ✅ | ✅ | ✅ | ✅ |
+| New tool added | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Documentation only | ✅ | ❌ | ❌ | ❌ | ❌ |
+| README update | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Workers optimization | ✅ | ✅ | ✅ | ✅ (optional) | ✅ |
+| Test improvements | ✅ | ❌ | ❌ | ❌ | ❌ |
+
+---
+
+## Common Issues
+
+### "npm publish" fails with 403
+
+**Problem**: Already published this version
+
+**Solution**:
+1. Check current npm version: `npm view @aborruso/ckan-mcp-server version`
+2. Bump version in package.json
+3. Try again
+
+### GitHub Release shows old version as "Latest"
+
+**Problem**: New release not created, only tag pushed
+
+**Solution**:
+```bash
+gh release create v0.X.Y --title "..." --notes "..."
+```
+
+### Cloudflare deployment fails
+
+**Problem**: Wrangler authentication expired
+
+**Solution**:
+```bash
+wrangler logout
+wrangler login
+npm run deploy
+```
+
+### Workers endpoint returns 404 after deployment
+
+**Problem**: DNS propagation delay
+
+**Solution**: Wait 30-60 seconds, then test again
+
+---
+
 ## FAQ
 
 ### Q: Can I use a custom domain?
