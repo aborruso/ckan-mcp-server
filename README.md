@@ -54,6 +54,61 @@ TRANSPORT=http PORT=3000 npm start
 
 The server will be available at `http://localhost:3000/mcp`
 
+## Deployment Options
+
+### Option 1: Local Installation (stdio mode)
+
+**Best for**: Personal use with Claude Desktop
+
+Install and run locally on your machine (see Installation section above).
+
+### Option 2: Self-Hosted HTTP Server
+
+**Best for**: Team use, custom infrastructure
+
+Deploy on your own server using Node.js:
+
+```bash
+TRANSPORT=http PORT=3000 npm start
+```
+
+### Option 3: Cloudflare Workers ⭐ NEW
+
+**Best for**: Global access, zero infrastructure, free hosting
+
+Deploy to Cloudflare's edge network for worldwide low-latency access.
+
+**Prerequisites**:
+- Cloudflare account (free): https://dash.cloudflare.com/sign-up
+- Wrangler CLI: `npm install -g wrangler`
+
+**Quick Deploy**:
+
+```bash
+# Clone repository
+git clone https://github.com/aborruso/ckan-mcp-server.git
+cd ckan-mcp-server
+
+# Install dependencies
+npm install
+
+# Authenticate with Cloudflare
+wrangler login
+
+# Deploy to Workers
+npm run deploy
+```
+
+Your server will be live at: `https://ckan-mcp-server.<your-account>.workers.dev`
+
+**Free tier includes**:
+- 100,000 requests/day
+- Global edge deployment
+- Automatic HTTPS
+- No cold starts
+
+For detailed deployment instructions, see [DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
 ## Claude Desktop Configuration
 
 Configuration file location:
@@ -119,6 +174,22 @@ If you cloned the repository:
   }
 }
 ```
+
+### Option 4: Cloudflare Workers (HTTP transport)
+
+Use the public Cloudflare Workers deployment (no local installation required):
+
+```json
+{
+  "mcpServers": {
+    "ckan": {
+      "url": "https://ckan-mcp-server.andy-pr.workers.dev/mcp"
+    }
+  }
+}
+```
+
+**Note**: This uses the public endpoint. You can also deploy your own Workers instance and use that URL instead.
 
 ## Available Tools
 

@@ -79,6 +79,100 @@ ckan_group_show({
 
 ---
 
+## Online Deployment with Cloudflare Workers
+
+### Rationale
+
+The server is **stateless and lightweight**:
+- No database or persistent state
+- Only HTTP calls to CKAN APIs
+- All operations are read-only
+- Each request is independent
+
+**Cloudflare Workers** is the ideal platform:
+- Free tier: 100k requests/day
+- Native SSE (Server-Sent Events) support for MCP HTTP transport
+- Global edge deployment (low latency worldwide)
+- Zero cold starts
+- Automatic HTTPS
+
+### Alternative Platforms Considered
+
+- **Railway**: Free tier $5/month credit - good for stateful apps, overkill for this
+- **Fly.io**: Free tier 3 shared VMs - more infrastructure control than needed
+- **Render**: Free tier with spin-down - not ideal for MCP availability
+
+### Implementation Approach
+
+1. **Adapt HTTP transport** for Workers environment:
+   - Convert Express.js endpoint to Workers `fetch()` handler
+   - Implement SSE streaming for MCP protocol
+
+2. **Configuration**:
+   - Use Workers environment variables for settings
+   - Keep `wrangler.toml` minimal
+
+3. **Testing**:
+   - Use `wrangler dev` for local testing
+   - Deploy to workers.dev subdomain first
+
+4. **Example deployment**:
+
+```bash
+# Install Wrangler CLI
+npm install -g wrangler
+
+# Configure Worker
+cat > wrangler.toml << EOF
+name = "ckan-mcp-server"
+main = "src/worker.ts"
+compatibility_date = "2024-01-01"
+EOF
+
+# Deploy
+wrangler deploy
+```
+
+5. **Worker adapter** (`src/worker.ts` - estimated ~80 lines):
+
+```typescript
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { registerAllTools } from './tools/index.js';
+
+export default {
+  async fetch(request: Request): Promise<Response> {
+    if (request.method !== 'POST' || new URL(request.url).pathname !== '/mcp') {
+      return new Response('Not Found', { status: 404 });
+    }
+
+    const server = new McpServer({ /* ... */ });
+    registerAllTools(server);
+
+    // Implement SSE streaming for MCP
+    const { readable, writable } = new TransformStream();
+    // ... MCP protocol handling
+
+    return new Response(readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+};
+```
+
+**Implementation complexity**: Medium (~100-150 lines total)
+- Create worker.ts adapter
+- Update build config for Workers output
+- Test with wrangler dev
+- Deploy and verify
+
+**Deployment URL**: `https://ckan-mcp-server.<account>.workers.dev`
+
+---
+
 ## Backlog Priority
 
 1. ~~**High**: MCP Resource Templates~~ ✅ Done (v0.3.0)

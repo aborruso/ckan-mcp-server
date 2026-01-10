@@ -1,0 +1,6 @@
+name = "ckan-mcp-server"
+main = "dist/worker.js"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build:worker"

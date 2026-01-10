@@ -1,5 +1,48 @@
 # LOG
 
+## 2026-01-10
+
+### Version 0.4.0 - Cloudflare Workers Deployment ⭐
+
+- **Production deployment**: Server now live on Cloudflare Workers
+  - Public endpoint: `https://ckan-mcp-server.andy-pr.workers.dev`
+  - Global edge deployment (low latency worldwide)
+  - Free tier: 100,000 requests/day
+  - Bundle size: 398KB (minified: 130KB gzipped)
+  - Cold start time: 58ms
+
+- **New files**:
+  - `src/worker.ts` (95 lines): Workers entry point using Web Standards transport
+  - `wrangler.toml` (5 lines): Cloudflare Workers configuration
+
+- **New npm scripts**:
+  - `build:worker`: Compile for Workers (browser platform, ESM format)
+  - `dev:worker`: Local testing with wrangler dev
+  - `deploy`: Build and deploy to Cloudflare
+
+- **Architecture**:
+  - Uses `WebStandardStreamableHTTPServerTransport` from MCP SDK
+  - Compatible with Workers runtime (no Node.js APIs)
+  - Stateless mode (no session management)
+  - JSON responses enabled for simplicity
+  - CORS enabled for browser access
+
+- **Testing**: All 7 MCP tools verified in Workers environment
+  - Health check: ✅ Working
+  - tools/list: ✅ Returns all 7 tools
+  - ckan_status_show: ✅ External CKAN API calls working
+  - Response times: < 2s for typical queries
+
+- **Documentation**:
+  - Updated README.md with "Deployment Options" section
+  - Added Option 4 to Claude Desktop config (Workers HTTP transport)
+  - Created OpenSpec proposal in `openspec/changes/add-cloudflare-workers/`
+
+- **No breaking changes**: stdio and self-hosted HTTP modes still fully supported
+  - Dual build system: Node.js bundle unchanged
+  - Existing tests (113) all passing
+  - Version bumped to 0.4.0
+
 ## 2026-01-09
 
 ### Version 0.3.2 - npm Publication

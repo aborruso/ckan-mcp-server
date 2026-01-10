@@ -41,7 +41,7 @@ The server exposes MCP tools for:
 # Build project (uses esbuild - fast and lightweight)
 npm run build
 
-# Run test suite (79 tests - unit + integration)
+# Run test suite (113 tests - unit + integration)
 npm test
 
 # Watch mode for tests during development
@@ -61,6 +61,11 @@ npm run watch
 
 # Build + run
 npm run dev
+
+# Cloudflare Workers deployment (v0.4.0+)
+npm run build:worker      # Build for Workers
+npm run dev:worker        # Test locally with Wrangler
+npm run deploy            # Deploy to Cloudflare Workers
 ```
 
 ### Build System
@@ -112,7 +117,8 @@ The server is implemented with a modular structure to improve maintainability an
 
 ```
 src/
-├── index.ts              # Entry point (42 lines)
+├── index.ts              # Entry point Node.js (42 lines)
+├── worker.ts             # Entry point Cloudflare Workers (95 lines) [v0.4.0+]
 ├── server.ts             # MCP server setup (12 lines)
 ├── types.ts              # Types & schemas (16 lines)
 ├── utils/
@@ -134,7 +140,9 @@ src/
     └── http.ts           # HTTP transport (27 lines)
 ```
 
-**Total**: ~1350 lines (including new resources module)
+**Total**: ~1445 lines (including Workers deployment)
+
+**Note**: `worker.ts` (v0.4.0+) is an alternative entry point for Cloudflare Workers deployment. Tool handlers (`tools/*`) are shared between Node.js and Workers runtimes.
 
 The server (`src/index.ts`):
 
@@ -178,10 +186,32 @@ The server (`src/index.ts`):
 
 ### Transport Modes
 
-The server automatically selects the transport mode based on the `TRANSPORT` environment variable:
+The server supports three transport modes:
 
 - **stdio** (default): for integration with Claude Desktop and other local MCP clients
 - **http**: exposes POST `/mcp` endpoint on configurable port (default 3000)
+- **Cloudflare Workers** (v0.4.0+): global edge deployment via `src/worker.ts`
+
+### Cloudflare Workers Deployment
+
+**Added in v0.4.0**. The server can be deployed to Cloudflare Workers for global HTTP access.
+
+**Key files**:
+- `src/worker.ts` - Workers entry point using Web Standards transport
+- `wrangler.toml` - Cloudflare configuration
+
+**Deployment workflow**:
+1. `npm run dev:worker` - Test locally (http://localhost:8787)
+2. `npm run deploy` - Deploy to Cloudflare
+3. Access at: `https://ckan-mcp-server.<account>.workers.dev`
+
+**Architecture**:
+- Uses `WebStandardStreamableHTTPServerTransport` from MCP SDK
+- Compatible with Workers runtime (no Node.js APIs)
+- Stateless mode (no session management)
+- All 7 tools and 3 resource templates work identically to Node.js version
+
+See `docs/DEPLOYMENT.md` for complete deployment guide.
 
 ### CKAN API Integration
 
@@ -293,28 +323,55 @@ curl -X POST http://localhost:3000/mcp \
 To test with Claude Desktop, add MCP configuration to config file.
 To test with Claude Desktop, add the MCP configuration to the config file.
 
-## Note di Sviluppo
+## Development Notes
 
-### Refactoring 2026-01-08
-Il codebase è stato refactorizzato da un singolo file di 1021 righe a 11 moduli. Vedi `REFACTORING.md` per dettagli.
+### Version History
 
-**Vantaggi**:
-- File più piccoli (max 350 righe)
-- Modifiche localizzate e sicure
-- Testing isolato possibile
-- Manutenzione semplificata
-- Zero breaking changes
+**v0.4.0 (2026-01-10)**: Cloudflare Workers deployment
+- Added `src/worker.ts` for Workers runtime
+- Global edge deployment support
+- Web Standards transport integration
+- See `docs/DEPLOYMENT.md` for deployment guide
 
-### To Do
-- Non ci sono test automatizzati - considerare di aggiungerli per tool critici
-- Il limite di 50000 caratteri per l'output è hardcoded in `types.ts` - potrebbe essere configurabile
-- Formato date usa locale 'it-IT' in `utils/formatting.ts` - potrebbe essere parametrizzato
-- Il server supporta solo lettura (tutti i tool sono read-only, non modificano dati su CKAN)
-- Non c'è caching - ogni richiesta fa una chiamata HTTP fresca alle API CKAN
-- Non c'è autenticazione - usa solo endpoint pubblici CKAN
+**v0.3.0 (2026-01-08)**: MCP Resource Templates
+- Added `ckan://` URI scheme support
+- Direct data access for datasets, resources, organizations
+
+**v0.2.0 (2026-01-08)**: Comprehensive test suite
+- 113 tests (unit + integration)
+- 97%+ code coverage
+
+**v0.1.0 (2026-01-08)**: Modular refactoring
+- Restructured from monolithic file to 11 modules
+- Improved maintainability and testability
+
+### Known Limitations
+
+- **Output limit**: 50,000 characters hardcoded in `types.ts` (could be configurable)
+- **Date formatting**: Uses 'it-IT' locale in `utils/formatting.ts` (could be parameterized)
+- **Read-only**: All tools are read-only (no data modification on CKAN)
+- **No caching**: Every request makes fresh HTTP call to CKAN APIs
+- **No authentication**: Uses only public CKAN endpoints
+- **No WebSocket**: MCP over HTTP uses JSON responses (not SSE streaming in Workers)
 
 ### Adding New Tools
-1. Crea nuovo file in `src/tools/`
-2. Esporta `registerXxxTools(server: McpServer)`
-3. Importa e chiama in `src/index.ts`
-4. Build e test
+
+1. Create new file in `src/tools/`
+2. Export `registerXxxTools(server: McpServer)` function
+3. Import and call in both `src/index.ts` and `src/worker.ts`
+4. Add tests in `tests/integration/`
+5. Build and test: `npm run build && npm test`
+
+### Release Workflow
+
+When releasing a new version:
+
+1. **Update version**: Edit `package.json` version field
+2. **Update LOG.md**: Add entry with date and changes
+3. **Commit changes**: `git add . && git commit -m "..."`
+4. **Push to GitHub**: `git push origin main`
+5. **Create tag**: `git tag -a v0.x.0 -m "..." && git push origin v0.x.0`
+6. **Publish to npm** (optional): `npm publish`
+7. **Deploy to Cloudflare** (if code changed): `npm run deploy`
+
+See `docs/DEPLOYMENT.md` for detailed Cloudflare deployment instructions.
