@@ -10,13 +10,13 @@ export async function runHTTP(server: McpServer) {
   const app = express();
   app.use(express.json());
 
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined,
+    enableJsonResponse: true
+  });
+  await server.connect(transport);
+
   app.post('/mcp', async (req, res) => {
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-      enableJsonResponse: true
-    });
-    res.on('close', () => transport.close());
-    await server.connect(transport);
     await transport.handleRequest(req, res, req.body);
   });
 

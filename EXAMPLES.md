@@ -289,6 +289,56 @@ ckan_package_search({
 
 CKAN uses Apache Solr for search. The `q` parameter supports advanced Solr query syntax including fuzzy matching, proximity search, boosting, and complex boolean logic.
 
+### Understanding Solr Field Types: Exact vs Fuzzy Search
+
+**Important**: CKAN's Solr schema defines two main field types that behave differently in searches:
+
+#### String Fields (type="string")
+- **Behavior**: Exact match, case-sensitive, no normalization
+- **Fields**: `res_format`, `tags`, `organization`, `license`, `license_id`, `state`, `name`
+- **Example**: `res_format:CSV` finds 43,836 results, but `res_format:csv` finds 0 results
+
+```typescript
+// Works - exact match
+ckan_package_search({
+  server_url: "https://www.dati.gov.it/opendata",
+  fq: "res_format:CSV",
+  rows: 10
+})
+// → 43,836 results
+
+// Fails - wrong case
+ckan_package_search({
+  server_url: "https://www.dati.gov.it/opendata",
+  fq: "res_format:csv",
+  rows: 10
+})
+// → 0 results
+```
+
+#### Text Fields (type="text")
+- **Behavior**: Fuzzy search enabled, normalized (accents/punctuation removed), tokenized
+- **Fields**: `title`, `notes`, `author`, `maintainer`, `res_name`, `res_description`
+- **Example**: `title:sanità` also finds "sanita", "sanità", "Sanità" (variations)
+
+```typescript
+// Fuzzy search automatically applied on text fields
+ckan_package_search({
+  server_url: "https://www.dati.gov.it/opendata",
+  q: "title:sanità~2",  // Finds variations with up to 2 character differences
+  rows: 20
+})
+```
+
+#### Accessing the Schema
+
+You can view CKAN's Solr schema to see all field types:
+
+1. **GitHub**: https://github.com/ckan/ckan/blob/master/ckan/config/solr/schema.xml
+2. **Solr API** (if available): `http://your-ckan-server:8983/solr/ckan/schema`
+
+Note: Public CKAN portals (like dati.gov.it) do not expose the Solr endpoint directly for security reasons - only the CKAN API is public.
+
 ### Fuzzy Search
 
 Find terms with similar spelling (edit distance matching). Useful for typos or variations.

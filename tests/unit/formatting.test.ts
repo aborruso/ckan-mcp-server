@@ -36,7 +36,7 @@ describe('truncateText', () => {
 describe('formatDate', () => {
   it('formats ISO date string correctly', () => {
     const result = formatDate('2024-01-15T10:30:00Z');
-    expect(result).toMatch(/\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2}/);
+    expect(result).toBe('2024-01-15');
   });
 
   it('handles different ISO date formats', () => {

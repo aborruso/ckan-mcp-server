@@ -348,7 +348,7 @@ To test with Claude Desktop, add the MCP configuration to the config file.
 ### Known Limitations
 
 - **Output limit**: 50,000 characters hardcoded in `types.ts` (could be configurable)
-- **Date formatting**: Uses 'it-IT' locale in `utils/formatting.ts` (could be parameterized)
+- **Date formatting**: Uses fixed ISO `YYYY-MM-DD` in `utils/formatting.ts` (could be configurable)
 - **Read-only**: All tools are read-only (no data modification on CKAN)
 - **No caching**: Every request makes fresh HTTP call to CKAN APIs
 - **No authentication**: Uses only public CKAN endpoints
@@ -358,7 +358,7 @@ To test with Claude Desktop, add the MCP configuration to the config file.
 
 1. Create new file in `src/tools/`
 2. Export `registerXxxTools(server: McpServer)` function
-3. Import and call in both `src/index.ts` and `src/worker.ts`
+3. Add to `registerAll()` in `src/server.ts`
 4. Add tests in `tests/integration/`
 5. Build and test: `npm run build && npm test`
 

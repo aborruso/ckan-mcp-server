@@ -4,21 +4,12 @@
  * Provides MCP tools via HTTP for global edge deployment.
  */
 
-import { createServer } from "./server.js";
-import { registerPackageTools } from "./tools/package.js";
-import { registerOrganizationTools } from "./tools/organization.js";
-import { registerDatastoreTools } from "./tools/datastore.js";
-import { registerStatusTools } from "./tools/status.js";
-import { registerAllResources } from "./resources/index.js";
+import { createServer, registerAll } from "./server.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 
 // Create and configure MCP server (singleton for Workers)
 const server = createServer();
-registerPackageTools(server);
-registerOrganizationTools(server);
-registerDatastoreTools(server);
-registerStatusTools(server);
-registerAllResources(server);
+registerAll(server);
 
 // Create transport (stateless mode for Workers)
 const transport = new WebStandardStreamableHTTPServerTransport({
@@ -37,7 +28,7 @@ export default {
     if (request.method === 'GET' && url.pathname === '/health') {
       return new Response(JSON.stringify({
         status: 'ok',
-        version: '0.4.0',
+        version: '0.4.1',
         tools: 7,
         resources: 3,
         runtime: 'cloudflare-workers'

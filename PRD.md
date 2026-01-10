@@ -662,7 +662,7 @@ ckan_package_search({
    - Non configurabile
 
 7. **Locale**:
-   - Date formattate in 'it-IT'
+   - Date formattate in ISO `YYYY-MM-DD`
    - Non parametrizzato
 
 ### 9.2 External Dependencies

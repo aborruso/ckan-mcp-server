@@ -19,9 +19,16 @@ export function truncateText(text: string, limit: number = CHARACTER_LIMIT): str
  */
 export function formatDate(dateStr: string): string {
   try {
-    return new Date(dateStr).toLocaleString('it-IT');
+    if (!dateStr) {
+      return 'Invalid Date';
+    }
+    const date = new Date(dateStr);
+    if (Number.isNaN(date.getTime())) {
+      return 'Invalid Date';
+    }
+    return date.toISOString().slice(0, 10);
   } catch {
-    return dateStr;
+    return 'Invalid Date';
   }
 }
 

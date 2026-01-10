@@ -5,12 +5,12 @@ function normalizeUrl(url: string): string {
 }
 
 /**
- * Genera l'URL di visualizzazione per un dataset
+ * Generate the view URL for a dataset
  */
 export function getDatasetViewUrl(serverUrl: string, pkg: any): string {
   const cleanServerUrl = normalizeUrl(serverUrl);
   
-  // Cerca se il server è tra quelli configurati o i suoi alias
+  // Find matching portal or alias
   const portal = (portalsConfig.portals as any[]).find((p: any) => {
     const mainUrl = normalizeUrl(p.api_url);
     const aliases = (p.api_url_aliases || []).map(normalizeUrl);
@@ -26,7 +26,7 @@ export function getDatasetViewUrl(serverUrl: string, pkg: any): string {
 }
 
 /**
- * Genera l'URL di visualizzazione per un'organizzazione
+ * Generate the view URL for an organization
  */
 export function getOrganizationViewUrl(serverUrl: string, org: any): string {
   const cleanServerUrl = normalizeUrl(serverUrl);

@@ -2,6 +2,24 @@
 
 ## 2026-01-10
 
+### Version 0.4.1 - Maintenance
+- **Date formatting**: ISO `YYYY-MM-DD` output, tests aligned
+- **HTTP transport**: Single shared transport per process
+- **Registration**: Centralized tool/resource setup via `registerAll()`
+- **Docs**: Updated CLAUDE/PRD/REFACTORING notes
+
+## 2026-01-10
+
+### Documentation Enhancement - Solr Field Types
+- **New section in EXAMPLES.md**: "Understanding Solr Field Types: Exact vs Fuzzy Search"
+  - Documents difference between `type=string` (exact match) and `type=text` (fuzzy)
+  - String fields: res_format, tags, organization, license, state, name (case-sensitive)
+  - Text fields: title, notes, author, maintainer (normalized, fuzzy enabled)
+  - Practical example: `res_format:CSV` (43,836 results) vs `res_format:csv` (0 results)
+  - Links to CKAN Solr schema on GitHub
+  - Explains why some searches are exact and others are fuzzy
+- **Impact**: Users understand when exact matching is required vs when fuzzy search works
+
 ### Version 0.4.0 - Cloudflare Workers Deployment ⭐
 
 - **Production deployment**: Server now live on Cloudflare Workers

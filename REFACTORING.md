@@ -70,7 +70,7 @@ src/
 
 **`utils/formatting.ts`** (Output Formatting)
 - `truncateText()` - Limita output a CHARACTER_LIMIT
-- `formatDate()` - Format date in Italian locale
+- `formatDate()` - Format date in ISO `YYYY-MM-DD`
 - `formatBytes()` - Human-readable file sizes
 
 ### Tools
@@ -98,6 +98,7 @@ src/
 
 **`transport/http.ts`** (HTTP Transport)
 - `runHTTP()` - HTTP server on configurable port
+- Single shared transport per process
 - For remote access via HTTP POST
 
 ## Build Configuration
