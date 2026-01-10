@@ -22,24 +22,25 @@ Exposes MCP tools for:
 
 ### Code Style
 - TypeScript strict mode enabled
-- Single-file architecture (src/index.ts)
-- Utility functions for reusable operations (makeCkanRequest, truncateText, formatDate, formatBytes)
+- Modular tool files in `src/tools/*`
+- Utility functions for reusable operations (makeCkanRequest, truncateText, formatDate)
 - Zod schemas for strict input validation (reject extra parameters)
 - Italian locale for date formatting (it-IT)
 - Markdown output optimized for human readability; JSON available for programmatic use
 
 ### Architecture Patterns
-- **Single-file MCP server** - all logic in src/index.ts
-- **Tool-based architecture** - 7 registered MCP tools for CKAN operations
-- **Dual transport modes**:
+- **Modular MCP server** - registration in `src/server.ts`
+- **Tool-based architecture** - 13 registered MCP tools for CKAN operations
+- **Multiple transport modes**:
   - stdio (default) - for local MCP client integration
   - HTTP - for remote access via POST /mcp endpoint
+  - Cloudflare Workers - `/mcp` endpoint in `src/worker.ts`
 - **Read-only operations** - no data modification on CKAN
 - **No caching** - fresh API calls for each request
 - **Error handling** - HTTP errors, timeouts, server validation
 
 ### Testing Strategy
-- **No automated tests currently** (consider adding for critical tools)
+- **Automated tests** with Vitest (integration fixtures)
 - Manual testing:
   - stdio mode: direct integration testing with Claude Desktop
   - HTTP mode: curl-based testing against localhost endpoint
@@ -67,6 +68,7 @@ Exposes MCP tools for:
 - Output truncated to 50000 characters max (hardcoded)
 - Dates formatted in Italian locale
 - File sizes in human-readable format
+- `server_url` for Italy uses `https://dati.gov.it/opendata`
 
 ## Important Constraints
 
@@ -91,7 +93,7 @@ Exposes MCP tools for:
 
 ### CKAN Portals
 Major supported portals:
-- 🇮🇹 https://dati.gov.it (Italia)
+- 🇮🇹 https://dati.gov.it/opendata (Italia)
 - 🇺🇸 https://catalog.data.gov (United States)
 - 🇨🇦 https://open.canada.ca/data (Canada)
 - 🇬🇧 https://data.gov.uk (United Kingdom)
