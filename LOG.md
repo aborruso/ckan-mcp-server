@@ -2,6 +2,10 @@
 
 ## 2026-01-10
 
+### Web GUI chat MVP
+- **Web GUI**: Replaced landing with MCP-backed chat UI (vanilla + Tailwind)
+- **MCP**: Added JSON-RPC search flow with dataset cards
+
 ### Web GUI landing + Pages deploy
 - **Web GUI**: Added static landing page in `web-gui/public`
 - **CI**: Added GitHub Pages workflow for auto deploy on HTML changes

@@ -4,120 +4,291 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CKAN Open Data Explorer</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f7f7f9;
-        --card: #ffffff;
-        --text: #1f2937;
-        --muted: #6b7280;
-        --accent: #2563eb;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.6;
-      }
-      main {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 48px 20px 80px;
-      }
-      header {
-        text-align: center;
-        margin-bottom: 48px;
-      }
-      h1 {
-        font-size: clamp(2.2rem, 5vw, 3.1rem);
-        margin-bottom: 12px;
-      }
-      p.lead {
-        font-size: 1.1rem;
-        color: var(--muted);
-      }
-      .grid {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        margin-top: 32px;
-      }
-      .card {
-        background: var(--card);
-        border-radius: 14px;
-        padding: 24px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      }
-      .card h2 {
-        font-size: 1.15rem;
-        margin-bottom: 8px;
-      }
-      .card p {
-        color: var(--muted);
-      }
-      .cta {
-        margin-top: 48px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
-        text-align: center;
-      }
-      .cta a {
-        display: inline-block;
-        padding: 12px 22px;
-        border-radius: 999px;
-        background: var(--accent);
-        color: white;
-        text-decoration: none;
-        font-weight: 600;
-      }
-      .meta {
-        margin-top: 32px;
-        font-size: 0.95rem;
-        color: var(--muted);
-      }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <main>
-      <header>
-        <h1>CKAN Open Data Explorer</h1>
-        <p class="lead">
-          Interfaccia conversazionale per esplorare portali CKAN con linguaggio naturale e tool MCP.
-        </p>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <main class="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10">
+      <header class="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 class="text-3xl font-semibold">CKAN Open Data Explorer</h1>
+            <p class="text-slate-500">
+              Chat semplice che interroga il server MCP e mostra i dataset trovati.
+            </p>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <span id="status-dot" class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>
+            <span id="status-text" class="text-slate-500">Verifica MCP...</span>
+          </div>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="flex flex-col gap-2 text-sm font-medium">
+            Endpoint MCP
+            <input
+              id="mcp-endpoint"
+              class="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              placeholder="https://ckan-mcp-server.andy-pr.workers.dev/mcp"
+            />
+          </label>
+          <label class="flex flex-col gap-2 text-sm font-medium">
+            Server CKAN
+            <input
+              id="ckan-server"
+              class="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              placeholder="https://www.dati.gov.it/opendata"
+            />
+          </label>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-4 text-sm">
+          <button
+            id="save-settings"
+            class="rounded-full bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-700"
+          >
+            Applica impostazioni
+          </button>
+          <p class="text-slate-500">
+            Nessuna integrazione Gemini: solo MCP JSON-RPC.
+          </p>
+        </div>
       </header>
 
-      <section class="grid">
-        <article class="card">
-          <h2>Ricerca semplice</h2>
-          <p>Trova dataset e risorse senza conoscere le API CKAN o la sintassi dei portali.</p>
-        </article>
-        <article class="card">
-          <h2>Esperienza guidata</h2>
-          <p>Chat fluida con suggerimenti, rendering markdown e feedback sugli errori.</p>
-        </article>
-        <article class="card">
-          <h2>Tool MCP</h2>
-          <p>Il frontend orchestration chiama il server MCP per ottenere dati aggiornati.</p>
-        </article>
-        <article class="card">
-          <h2>Configurabile</h2>
-          <p>Endpoint MCP e chiave Gemini impostabili dall’utente per ogni ambiente.</p>
-        </article>
+      <section class="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-sm">
+        <div id="tool-status" class="hidden rounded-xl bg-blue-50 px-4 py-2 text-sm text-blue-700"></div>
+        <div id="messages" class="flex flex-col gap-4">
+          <div class="rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
+            Ciao! Inserisci una query (es. "energia rinnovabile") per cercare dataset.
+          </div>
+        </div>
       </section>
 
-      <section class="cta">
-        <a href="https://ckan-mcp-server.andy-pr.workers.dev/mcp" target="_blank" rel="noreferrer">
-          Endpoint MCP di riferimento
-        </a>
-        <p class="meta">Pagina statica di presentazione per il futuro web GUI.</p>
+      <section class="rounded-3xl bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-3 md:flex-row">
+          <textarea
+            id="message-input"
+            rows="2"
+            class="w-full flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none"
+            placeholder="Scrivi la tua ricerca"
+          ></textarea>
+          <button
+            id="send-btn"
+            class="rounded-2xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+          >
+            Cerca
+          </button>
+        </div>
       </section>
     </main>
+
+    <script>
+      const DEFAULT_ENDPOINT = "https://ckan-mcp-server.andy-pr.workers.dev/mcp";
+      const DEFAULT_CKAN = "https://www.dati.gov.it/opendata";
+      const CORS_PROXY = "https://corsproxy.io/?";
+
+      const elements = {
+        endpoint: document.getElementById("mcp-endpoint"),
+        ckan: document.getElementById("ckan-server"),
+        save: document.getElementById("save-settings"),
+        statusDot: document.getElementById("status-dot"),
+        statusText: document.getElementById("status-text"),
+        messages: document.getElementById("messages"),
+        input: document.getElementById("message-input"),
+        send: document.getElementById("send-btn"),
+        toolStatus: document.getElementById("tool-status")
+      };
+
+      const state = {
+        endpoint: localStorage.getItem("mcpEndpoint") || DEFAULT_ENDPOINT,
+        ckanServer: localStorage.getItem("ckanServer") || DEFAULT_CKAN,
+        busy: false
+      };
+
+      elements.endpoint.value = state.endpoint;
+      elements.ckan.value = state.ckanServer;
+
+      const setStatus = (status, text) => {
+        elements.statusText.textContent = text;
+        elements.statusDot.className = "h-2.5 w-2.5 rounded-full";
+        if (status === "ok") {
+          elements.statusDot.classList.add("bg-emerald-500");
+        } else if (status === "error") {
+          elements.statusDot.classList.add("bg-rose-500");
+        } else {
+          elements.statusDot.classList.add("bg-slate-300");
+        }
+      };
+
+      const setToolStatus = (message) => {
+        if (message) {
+          elements.toolStatus.textContent = message;
+          elements.toolStatus.classList.remove("hidden");
+        } else {
+          elements.toolStatus.classList.add("hidden");
+        }
+      };
+
+      const addMessage = (role, content) => {
+        const wrapper = document.createElement("div");
+        const baseClass = "rounded-2xl px-4 py-3 text-sm";
+        wrapper.className =
+          role === "user"
+            ? `${baseClass} bg-slate-900 text-white self-end`
+            : `${baseClass} bg-slate-100 text-slate-700`;
+
+        if (typeof content === "string") {
+          wrapper.textContent = content;
+        } else {
+          wrapper.appendChild(content);
+        }
+
+        elements.messages.appendChild(wrapper);
+        wrapper.scrollIntoView({ behavior: "smooth", block: "end" });
+      };
+
+      const createDatasetCard = (dataset) => {
+        const card = document.createElement("div");
+        card.className = "rounded-2xl border border-slate-200 bg-white p-4 shadow-sm";
+
+        const title = document.createElement("h3");
+        title.className = "text-base font-semibold text-slate-900";
+        title.textContent = dataset.title || dataset.name || "Dataset";
+
+        const desc = document.createElement("p");
+        desc.className = "mt-2 text-sm text-slate-500";
+        desc.textContent = dataset.notes || "Descrizione non disponibile.";
+
+        const meta = document.createElement("p");
+        meta.className = "mt-3 text-xs text-slate-400";
+        const orgName = dataset.organization?.title || dataset.organization?.name || "Organizzazione";
+        const resources = Array.isArray(dataset.resources) ? dataset.resources.length : 0;
+        meta.textContent = `${orgName} · risorse: ${resources}`;
+
+        card.append(title, desc, meta);
+        return card;
+      };
+
+      const extractStructured = (result) => {
+        if (!result) return null;
+        if (result.structuredContent) return result.structuredContent;
+        const text = result.content?.[0]?.text;
+        if (!text) return null;
+        try {
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      };
+
+      const requestMcp = async (method, params, useProxy = false) => {
+        const endpoint = useProxy ? `${CORS_PROXY}${encodeURIComponent(state.endpoint)}` : state.endpoint;
+        const payload = {
+          jsonrpc: "2.0",
+          id: crypto.randomUUID(),
+          method,
+          params
+        };
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error.message || "Errore MCP");
+        }
+        return data.result;
+      };
+
+      const callMcp = async (method, params) => {
+        try {
+          return await requestMcp(method, params, false);
+        } catch (error) {
+          return await requestMcp(method, params, true);
+        }
+      };
+
+      const checkMcp = async () => {
+        setStatus("checking", "Verifica MCP...");
+        try {
+          await callMcp("tools/list", {});
+          setStatus("ok", "MCP online");
+        } catch (error) {
+          setStatus("error", "MCP offline");
+        }
+      };
+
+      const runSearch = async (query) => {
+        setToolStatus("Uso tool: ckan_package_search");
+        const result = await callMcp("tools/call", {
+          name: "ckan_package_search",
+          arguments: {
+            server_url: state.ckanServer,
+            q: query,
+            rows: 5,
+            response_format: "json"
+          }
+        });
+        setToolStatus("");
+        return extractStructured(result);
+      };
+
+      const handleSend = async () => {
+        const query = elements.input.value.trim();
+        if (!query || state.busy) return;
+        state.busy = true;
+        elements.send.disabled = true;
+        elements.send.classList.add("opacity-60");
+
+        addMessage("user", query);
+        elements.input.value = "";
+
+        try {
+          const data = await runSearch(query);
+          if (!data || !Array.isArray(data.results)) {
+            addMessage("assistant", "Nessun risultato disponibile.");
+            return;
+          }
+
+          const container = document.createElement("div");
+          container.className = "flex flex-col gap-3";
+
+          const summary = document.createElement("p");
+          summary.className = "text-sm text-slate-600";
+          summary.textContent = `Risultati trovati: ${data.count ?? data.results.length}`;
+          container.appendChild(summary);
+
+          data.results.forEach((dataset) => container.appendChild(createDatasetCard(dataset)));
+          addMessage("assistant", container);
+        } catch (error) {
+          addMessage("assistant", `Errore: ${error.message || "Impossibile contattare MCP"}`);
+        } finally {
+          state.busy = false;
+          elements.send.disabled = false;
+          elements.send.classList.remove("opacity-60");
+          setToolStatus("");
+        }
+      };
+
+      elements.save.addEventListener("click", async () => {
+        state.endpoint = elements.endpoint.value.trim() || DEFAULT_ENDPOINT;
+        state.ckanServer = elements.ckan.value.trim() || DEFAULT_CKAN;
+        localStorage.setItem("mcpEndpoint", state.endpoint);
+        localStorage.setItem("ckanServer", state.ckanServer);
+        await checkMcp();
+      });
+
+      elements.send.addEventListener("click", handleSend);
+      elements.input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          handleSend();
+        }
+      });
+
+      checkMcp();
+    </script>
   </body>
 </html>
