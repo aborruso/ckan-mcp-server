@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 import { makeCkanRequest } from '../../src/utils/http';
 import datastoreFixture from '../fixtures/responses/datastore-search-success.json';
+import datastoreSqlFixture from '../fixtures/responses/datastore-search-sql-success.json';
 import notFoundError from '../fixtures/errors/not-found.json';
 
 vi.mock('axios');
@@ -339,5 +340,38 @@ describe('ckan_datastore_search', () => {
       expect(result.total).toBe(50000);
       expect(result.records.length).toBe(50000);
     });
+  });
+});
+
+describe('ckan_datastore_search_sql', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('returns records for SQL query', async () => {
+    vi.mocked(axios.get).mockResolvedValue({ data: datastoreSqlFixture });
+
+    const result = await makeCkanRequest(
+      'http://demo.ckan.org',
+      'datastore_search_sql',
+      { sql: 'SELECT country, COUNT(*) AS total FROM "res-1" GROUP BY country' }
+    );
+
+    expect(result).toHaveProperty('records');
+    expect(result).toHaveProperty('fields');
+    expect(result.records.length).toBeGreaterThan(0);
+  });
+
+  it('passes SQL parameter to API', async () => {
+    vi.mocked(axios.get).mockResolvedValue({ data: datastoreSqlFixture });
+
+    await makeCkanRequest(
+      'http://demo.ckan.org',
+      'datastore_search_sql',
+      { sql: 'SELECT * FROM "res-1" LIMIT 5' }
+    );
+
+    const axiosCall = vi.mocked(axios.get).mock.calls[0];
+    expect(axiosCall[1].params.sql).toBe('SELECT * FROM "res-1" LIMIT 5');
   });
 });

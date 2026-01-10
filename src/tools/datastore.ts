@@ -143,4 +143,106 @@ Examples:
       }
     }
   );
+
+  /**
+   * DataStore SQL search
+   */
+  server.registerTool(
+    "ckan_datastore_search_sql",
+    {
+      title: "Search CKAN DataStore with SQL",
+      description: `Run SQL queries on a CKAN DataStore resource.
+
+This endpoint is only available on CKAN portals with DataStore enabled and SQL access exposed.
+
+Args:
+  - server_url (string): Base URL of CKAN server
+  - sql (string): SQL query (e.g., SELECT * FROM "resource_id" LIMIT 10)
+  - response_format ('markdown' | 'json'): Output format
+
+Returns:
+  SQL query results from DataStore
+
+Examples:
+  - { server_url: "...", sql: "SELECT * FROM \"abc-123\" LIMIT 10" }
+  - { server_url: "...", sql: "SELECT COUNT(*) AS total FROM \"abc-123\"" }`,
+      inputSchema: z.object({
+        server_url: z.string().url(),
+        sql: z.string().min(1),
+        response_format: ResponseFormatSchema
+      }).strict(),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: false
+      }
+    },
+    async (params) => {
+      try {
+        const result = await makeCkanRequest<any>(
+          params.server_url,
+          'datastore_search_sql',
+          { sql: params.sql }
+        );
+
+        if (params.response_format === ResponseFormat.JSON) {
+          return {
+            content: [{ type: "text", text: truncateText(JSON.stringify(result, null, 2)) }],
+            structuredContent: result
+          };
+        }
+
+        const records = result.records || [];
+        const fieldIds = result.fields?.map((field: any) => field.id) || Object.keys(records[0] || {});
+
+        let markdown = `# DataStore SQL Results\n\n`;
+        markdown += `**Server**: ${params.server_url}\n`;
+        markdown += `**SQL**: \`${params.sql}\`\n`;
+        markdown += `**Returned**: ${records.length} records\n\n`;
+
+        if (result.fields && result.fields.length > 0) {
+          markdown += `## Fields\n\n`;
+          markdown += result.fields.map((field: any) => `- **${field.id}** (${field.type})`).join('\n') + '\n\n';
+        }
+
+        if (records.length > 0 && fieldIds.length > 0) {
+          markdown += `## Records\n\n`;
+
+          const displayFields = fieldIds.slice(0, 8);
+          markdown += `| ${displayFields.join(' | ')} |\n`;
+          markdown += `| ${displayFields.map(() => '---').join(' | ')} |\n`;
+
+          for (const record of records.slice(0, 50)) {
+            const values = displayFields.map((field) => {
+              const value = record[field];
+              if (value === null || value === undefined) return '-';
+              const text = String(value);
+              return text.length > 50 ? text.substring(0, 47) + '...' : text;
+            });
+            markdown += `| ${values.join(' | ')} |\n`;
+          }
+
+          if (records.length > 50) {
+            markdown += `\n... and ${records.length - 50} more records\n`;
+          }
+          markdown += '\n';
+        } else {
+          markdown += 'No records returned by the SQL query.\n';
+        }
+
+        return {
+          content: [{ type: "text", text: truncateText(markdown) }]
+        };
+      } catch (error) {
+        return {
+          content: [{
+            type: "text",
+            text: `Error querying DataStore SQL: ${error instanceof Error ? error.message : String(error)}`
+          }],
+          isError: true
+        };
+      }
+    }
+  );
 }

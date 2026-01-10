@@ -185,7 +185,7 @@ Use the public Cloudflare Workers deployment (no local installation required):
 ### DataStore
 
 - **ckan_datastore_search**: Query tabular data
-- **ckan_datastore_search_sql**: SQL queries (in development)
+- **ckan_datastore_search_sql**: SQL queries on DataStore
 
 ### Groups
 
@@ -286,6 +286,15 @@ ckan_datastore_search({
   filters: { "regione": "Sicilia", "anno": 2023 },
   sort: "popolazione desc",
   limit: 50
+})
+```
+
+### DataStore SQL Query
+
+```typescript
+ckan_datastore_search_sql({
+  server_url: "https://demo.ckan.org",
+  sql: "SELECT Country, COUNT(*) AS total FROM \"abc-123-def\" GROUP BY Country ORDER BY total DESC LIMIT 10"
 })
 ```
 

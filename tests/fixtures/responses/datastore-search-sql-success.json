@@ -1,0 +1,26 @@
+{
+  "help": "http://demo.ckan.org/api/3/action/help_show?name=datastore_search_sql",
+  "success": true,
+  "result": {
+    "fields": [
+      {
+        "id": "country",
+        "type": "text"
+      },
+      {
+        "id": "total",
+        "type": "int4"
+      }
+    ],
+    "records": [
+      {
+        "country": "Italy",
+        "total": 3
+      },
+      {
+        "country": "France",
+        "total": 2
+      }
+    ]
+  }
+}

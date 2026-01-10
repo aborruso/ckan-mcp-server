@@ -2,6 +2,13 @@
 
 ## 2026-01-10
 
+### Version 0.4.4 - DataStore SQL
+- **Tool**: Added `ckan_datastore_search_sql`
+- **Docs**: Updated README/EXAMPLES/PRD for SQL support
+- **Tests**: Added SQL fixture and checks
+
+## 2026-01-10
+
 ### Version 0.4.3 - Tags and Groups
 - **Tags**: Added `ckan_tag_list` with faceting and filtering
 - **Groups**: Added `ckan_group_list`, `ckan_group_show`, `ckan_group_search`

@@ -210,6 +210,14 @@ ckan_datastore_search({
 })
 ```
 
+### SQL query
+```typescript
+ckan_datastore_search_sql({
+  server_url: "https://demo.ckan.org",
+  sql: "SELECT Country, COUNT(*) AS total FROM \"5b3cf3a8-9a58-45ee-8e1a-4d98b8320c9a\" GROUP BY Country ORDER BY total DESC LIMIT 10"
+})
+```
+
 ## Advanced Solr Searches
 
 ### AND combination

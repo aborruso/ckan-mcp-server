@@ -653,9 +653,9 @@ ckan_package_search({
    - Max 32.000 record per query
    - Dipende dalla configurazione del server CKAN
 
-5. **No SQL Support**:
-   - Tool `ckan_datastore_search_sql` menzionato come "in sviluppo"
-   - Non implementato nel codice attuale
+5. **SQL Support Limitations**:
+   - `ckan_datastore_search_sql` funziona solo se il portale espone l'endpoint SQL
+   - Alcuni portali disabilitano SQL per motivi di sicurezza
 
 6. **Timeout**:
    - 30 secondi fissi per HTTP request
@@ -696,9 +696,9 @@ ckan_package_search({
   - API key per endpoint privati
   - OAuth per portali che lo supportano
   
-- [ ] **SQL Query Support**
-  - Implementare `ckan_datastore_search_sql`
-  - Supporto query SQL complete
+- [x] **SQL Query Support**
+  - Implementato `ckan_datastore_search_sql`
+  - Richiede portali con DataStore SQL attivo
 
 - [ ] **Caching Layer**
   - Cache risultati frequenti
