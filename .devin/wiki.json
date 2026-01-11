@@ -1,0 +1,303 @@
+{
+  "repo_notes": [
+    {
+      "content": "There is no web GUI, the reference in the wiki should be removed."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Overview",
+      "purpose": "Introduce the CKAN MCP Server system, explaining its purpose as a Model Context Protocol server that enables AI agents and web users to interact with 500+ CKAN open data portals worldwide through natural language and structured queries",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Key Features",
+      "purpose": "Highlight the main capabilities: Web GUI with Gemini integration, 15+ CKAN tools, dual runtime support, MCP Resource Templates, and global edge deployment",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Architecture Overview",
+      "purpose": "Provide a high-level architectural diagram showing the three-tier system: Web GUI, MCP Server Core, and CKAN Portals, plus the dual deployment model",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started",
+      "purpose": "Guide users through the fastest path to using the system based on their needs and technical expertise",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Web GUI Quick Start",
+      "purpose": "Zero-installation quick start: navigate to GitHub Pages URL and start querying CKAN portals through natural language (lowest barrier entry point)",
+      "parent": "Getting Started",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Claude Desktop Setup",
+      "purpose": "Configure Claude Desktop to use the MCP server via stdio (local) or HTTP (remote/Workers) transport modes",
+      "parent": "Getting Started",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Installation Options",
+      "purpose": "Compare the four deployment options: Web GUI (zero install), npm global install, Cloudflare Workers, and self-hosted HTTP server",
+      "parent": "Getting Started",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Architecture",
+      "purpose": "Deep dive into the system architecture, component relationships, and design decisions",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "System Components",
+      "purpose": "Explain the modular architecture: entry points, transport layer, server core, tool handlers, resource templates, and utilities",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Web GUI Architecture",
+      "purpose": "Detail the Web GUI implementation: Gemini API integration for tool selection, conversation management, dual output formats, and CORS proxy fallback",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "MCP Server Core",
+      "purpose": "Explain the MCP server implementation: tool registration system, request routing, Zod validation, and error handling",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Transport Layer",
+      "purpose": "Document the three transport modes: stdio (12 lines), HTTP (27 lines), and Cloudflare Workers WebStandardStreamable, explaining how the same tools run across different runtimes",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Tool Layer",
+      "purpose": "Describe the tool implementation pattern: Zod schemas, handler functions, makeCkanRequest abstraction, and output formatting (1,465+ lines of business logic)",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Dual Runtime Design",
+      "purpose": "Explain how the same codebase runs on Node.js and Cloudflare Workers V8 isolates, including build targets, bundle sizes, and runtime differences",
+      "parent": "Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "User Guides",
+      "purpose": "Practical guides for end users interacting with CKAN data through the system",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Using the Web GUI",
+      "purpose": "Complete guide to the Web GUI: natural language queries, conversation history, tool status display, settings configuration, and result visualization",
+      "parent": "User Guides",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Querying CKAN Data",
+      "purpose": "Guide to common CKAN queries: searching datasets, exploring organizations, querying DataStore, using facets, and understanding Solr syntax",
+      "parent": "User Guides",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Advanced Search Techniques",
+      "purpose": "Document Solr query syntax: fuzzy search (~N), proximity search (\"phrase\"~N), boosting (^N), range queries, date math, wildcards, and boolean operators",
+      "parent": "User Guides",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "DataStore Queries",
+      "purpose": "Explain DataStore functionality: basic key-value filtering, SQL queries, field selection, sorting, pagination, and the 32,000 record limit",
+      "parent": "User Guides",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Working with Organizations",
+      "purpose": "Guide to organization tools: listing with package counts, searching by pattern, retrieving details, and understanding organizational hierarchies",
+      "parent": "User Guides",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Tool Reference",
+      "purpose": "Complete reference documentation for all 15+ MCP tools with parameters, return types, and usage examples",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Dataset Tools",
+      "purpose": "Document ckan_package_search, ckan_find_relevant_datasets, ckan_package_show, ckan_package_list with detailed parameter descriptions and examples",
+      "parent": "Tool Reference",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Organization Tools",
+      "purpose": "Document ckan_organization_list, ckan_organization_show, ckan_organization_search with sorting, pagination, and filtering options",
+      "parent": "Tool Reference",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "DataStore Tools",
+      "purpose": "Document ckan_datastore_search and ckan_datastore_search_sql with filtering syntax, SQL query examples, and limit constraints",
+      "parent": "Tool Reference",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Metadata Tools",
+      "purpose": "Document ckan_tag_list, ckan_group_list, ckan_group_show, ckan_group_search, and ckan_status_show for portal exploration",
+      "parent": "Tool Reference",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "MCP Resource Templates",
+      "purpose": "Explain the ckan:// URI scheme for accessing datasets, resources, and organizations via MCP Resource Templates",
+      "parent": "Tool Reference",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Developer Guide",
+      "purpose": "Guide for developers who want to modify, extend, or contribute to the codebase",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Project Structure",
+      "purpose": "Document the codebase organization: src/ structure, tool modules (1,465+ lines), utilities (138+ lines), resources (50+ lines), and test organization (2,340 lines)",
+      "parent": "Developer Guide",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Adding New Tools",
+      "purpose": "Step-by-step guide to implementing a new MCP tool: defining Zod schemas, creating handlers, using makeCkanRequest, formatting outputs, and registering with the server",
+      "parent": "Developer Guide",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Utility Functions",
+      "purpose": "Document the utility layer: makeCkanRequest (51 lines, 98.59% coverage), formatting functions (37 lines, 98% coverage), query resolution, and URL generation",
+      "parent": "Developer Guide",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
