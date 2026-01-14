@@ -24,6 +24,7 @@ Source: https://lobehub.com/it/mcp/openascot-ckan-mcp
 
 - Relevance scoring on title/notes/tags/org with top-N results.
 - Update cadence analysis with stale alerts.
+- Freshness check from MCP query vs declared frequency, warning that CKAN often exposes only metadata updates (resource description may change while data stays old).
 - Structure summary with schema + null-rate (when DataStore enabled).
 - Wrapper tool combining relevance + freshness + structure.
 
