@@ -33,173 +33,68 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 - No `.cursor/rules`, `.cursorrules`, or `.github/copilot-instructions.md` found
 
-## Core Commands
+## Commands
 
-Install deps:
+**Install**: `npm install`
 
-```bash
-npm install
-```
+**Build**: `npm run build` | `npm run build:tsc` | `npm run build:worker`
 
-Build (node bundle):
+**Run**: `npm start` | `npm run dev` | `npm run watch` | `npm run dev:worker` | `npm run deploy`
 
-```bash
-npm run build
-```
+**Test**: `npm test` | `npm run test:watch` | `npm run test:coverage`
 
-Build (worker bundle):
-
-```bash
-npm run build:worker
-```
-
-TypeScript build (tsc):
-
-```bash
-npm run build:tsc
-```
-
-Start server (stdio or HTTP via env):
-
-```bash
-npm start
-```
-
-Dev build + run:
-
-```bash
-npm run dev
-```
-
-Watch build:
-
-```bash
-npm run watch
-```
-
-Cloudflare dev:
-
-```bash
-npm run dev:worker
-```
-
-Deploy worker:
-
-```bash
-npm run deploy
-```
-
-## Tests
-
-Run all tests:
-
-```bash
-npm test
-```
-
-Watch tests:
-
-```bash
-npm run test:watch
-```
-
-Coverage:
-
-```bash
-npm run test:coverage
-```
-
-Run a single file:
-
-```bash
-npm test -- tests/unit/http.test.ts
-```
-
-Run a single test name:
-
-```bash
-npm test -- -t "makeCkanRequest"
-```
-
-Run single file with Vitest directly:
-
-```bash
-npx vitest tests/unit/http.test.ts
-```
-
-## Lint and Format
-
-- No ESLint or Prettier config detected
-- Do not add new formatters unless requested
-- Keep formatting consistent with existing files
-
-## Project Layout
-
-- `src/index.ts` entry point
-- `src/server.ts` server wiring
-- `src/tools/` MCP tool handlers
-- `src/utils/` helpers (http, formatting, search)
-- `src/resources/` MCP resource templates
-- `src/transport/` stdio + HTTP
-- `tests/unit/` utilities
-- `tests/integration/` tool behavior
-- `tests/fixtures/` mocked CKAN API responses
+**Single test**: `npm test -- tests/unit/http.test.ts` | `npm test -- -t "testName"`
 
 ## TypeScript Style
 
-- Use strict typing (`tsconfig.json` has `strict: true`)
-- Avoid `any` unless unavoidable or from CKAN payloads
-- Prefer explicit return types for exported functions
-- Use `type` aliases for structured objects
-- Keep `noUnusedLocals` and `noUnusedParameters` clean
-- ESM imports with `.js` extensions for local modules
+Use strict typing, avoid `any` unless from CKAN payloads. Prefer explicit return types, `type` aliases, ESM imports with `.js` extensions. Keep `noUnusedLocals` and `noUnusedParameters` clean.
 
 ## Import Conventions
 
-- Use `import type` for type-only imports
-- Group imports by kind: external, internal, types
-- Use double quotes for strings
-- Keep import paths relative and short
+Use `import type` for type-only imports. Group by kind: external, internal, types. Double quotes, relative paths.
 
 ## Naming
 
-- `camelCase` for vars/functions
-- `PascalCase` for types/classes
-- `UPPER_SNAKE_CASE` for constants
-- Tool names match MCP tool id strings
+`camelCase` vars/functions, `PascalCase` types/classes, `UPPER_SNAKE_CASE` constants. Tool names match MCP tool ids.
 
 ## Error Handling
 
-- Wrap tool handlers in `try/catch`
-- Return `{ isError: true }` for MCP errors
-- Include user-facing error text with context
-- For HTTP errors, map to readable messages
-- Preserve error cause when rethrowing
+Wrap tool handlers in `try/catch`. Return `{ isError: true }` for MCP errors. Include context, map HTTP errors to readable messages, preserve cause when rethrowing.
 
 ## Tool Responses
 
-- Use `ResponseFormat` for markdown vs JSON
-- Use `truncateText` for large payloads
-- Keep JSON output pretty-printed
-- Include `structuredContent` for JSON mode
+Use `ResponseFormat` for markdown vs JSON. `truncateText` for large payloads. Pretty-print JSON, include `structuredContent` for JSON mode.
 
 ## Testing Guidelines
 
-- Tests use Vitest and `globals: true`
-- Place new tests in `tests/unit` or `tests/integration`
-- Follow AAA pattern: Arrange, Act, Assert
-- Mock CKAN API via fixtures under `tests/fixtures`
-- Name tests descriptively with expected behavior
+Vitest with `globals: true`. Place tests in `tests/unit` or `tests/integration`. AAA pattern, mock via fixtures in `tests/fixtures`, descriptive names.
 
-## Configuration Notes
+## Configuration
 
-- Node engine: `>=18`
-- Worker build command set in `wrangler.toml`
-- Vitest coverage thresholds enforced in `vitest.config.ts`
+Node `>=18`. Worker build in `wrangler.toml`. Vitest coverage thresholds enforced.
 
 ## Change Hygiene
 
-- Keep diffs minimal and focused
-- Avoid unrelated refactors
-- Update tests for behavior changes
-- Avoid editing `dist/` (generated)
+Minimal focused diffs. No unrelated refactors. Update tests for behavior changes. Avoid editing `dist/`.
+
+## Project Layout
+
+`src/index.ts` entry, `src/server.ts` wiring, `src/tools/` handlers, `src/utils/` helpers, `src/resources/` templates, `src/transport/` stdio/HTTP. `tests/unit/` utilities, `tests/integration/` behavior, `tests/fixtures/` mocks.
+
+## CSV Data Exploration
+
+For exploring CSV resources from datasets, use duckdb CLI (already installed) with direct HTTP URL:
+
+```bash
+duckdb -jsonlines -c "DESCRIBE SELECT * FROM read_csv('http://url/file.csv')"
+duckdb -jsonlines -c "SUMMARIZE SELECT * FROM read_csv('http://url/file.csv')"
+duckdb -jsonlines -c "SELECT * FROM read_csv('http://url/file.csv') USING SAMPLE 10"
+```
+
+Use direct resource URLs (http/https), not GitHub view/blob URLs. The `-jsonlines` parameter outputs in JSONL format, easier for AI to parse.
+
+For random sampling, use `USING SAMPLE N` syntax (where N is the number of rows):
+
+```bash
+duckdb -jsonlines -c "SELECT * FROM read_csv('http://url/file.csv') USING SAMPLE 10"
+```
