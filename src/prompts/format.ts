@@ -27,7 +27,7 @@ export const registerFormatPrompt = (server: McpServer): void => {
       argsSchema: {
         server_url: z.string().url().describe("Base URL of the CKAN server"),
         format: z.string().min(1).describe("Resource format (e.g., CSV, JSON)"),
-        rows: z.number().int().positive().default(10).describe("Max results to return")
+        rows: z.coerce.number().int().positive().default(10).describe("Max results to return")
       }
     },
     async ({ server_url, format, rows }): Promise<PromptResult> =>

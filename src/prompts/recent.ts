@@ -33,7 +33,7 @@ export const registerRecentPrompt = (server: McpServer): void => {
       description: "Guided prompt to list recently updated datasets on a CKAN portal.",
       argsSchema: {
         server_url: z.string().url().describe("Base URL of the CKAN server"),
-        rows: z.number().int().positive().default(10).describe("Max results to return")
+        rows: z.coerce.number().int().positive().default(10).describe("Max results to return")
       }
     },
     async ({ server_url, rows }): Promise<PromptResult> =>

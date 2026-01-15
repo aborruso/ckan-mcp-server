@@ -2,6 +2,11 @@
 
 ## 2026-01-15
 
+### Version 0.4.11 - Prompt argument coercion
+- **Fix**: Prompt arguments now coerce numeric strings (e.g., rows) for MCP prompt requests
+- **Docs**: Updated evaluation notes for 0.4.11
+- **No breaking changes**: Prompt names and outputs unchanged
+
 ### Version 0.4.10 - Guided MCP prompts
 - **Feature**: Added 5 guided MCP prompts (theme, organization, format, recent datasets, dataset analysis)
 - **Docs**: README and new `docs/prompts.md` updated with usage examples

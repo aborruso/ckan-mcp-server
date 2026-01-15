@@ -37,7 +37,7 @@ export const registerOrganizationPrompt = (server: McpServer): void => {
       argsSchema: {
         server_url: z.string().url().describe("Base URL of the CKAN server"),
         organization: z.string().min(1).describe("Organization name or keyword"),
-        rows: z.number().int().positive().default(10).describe("Max results to return")
+        rows: z.coerce.number().int().positive().default(10).describe("Max results to return")
       }
     },
     async ({ server_url, organization, rows }): Promise<PromptResult> =>

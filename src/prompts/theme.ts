@@ -48,7 +48,7 @@ export const registerThemePrompt = (server: McpServer): void => {
       argsSchema: {
         server_url: z.string().url().describe("Base URL of the CKAN server"),
         theme: z.string().min(1).describe("Theme or group name to search"),
-        rows: z.number().int().positive().default(10).describe("Max results to return")
+        rows: z.coerce.number().int().positive().default(10).describe("Max results to return")
       }
     },
     async ({ server_url, theme, rows }): Promise<PromptResult> =>
