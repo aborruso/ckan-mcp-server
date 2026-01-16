@@ -648,7 +648,9 @@ Contributions are welcome! Please:
 
 ## License
 
-MIT License - See LICENSE.txt file for complete details.
+MIT License - See [LICENSE.txt](LICENSE.txt) for complete details.
+
+Third-party attributions: See [NOTICE](NOTICE) for third-party software notices and information.
 
 ## Useful Links
 
