@@ -172,13 +172,13 @@ Use the public Cloudflare Workers deployment (no local installation required):
 - **ckan_package_search**: Search datasets with Solr queries
 - **ckan_find_relevant_datasets**: Rank datasets by relevance score
 - **ckan_package_show**: Complete details of a dataset
-- **ckan_package_list**: List all datasets
 - **ckan_tag_list**: List tags with counts
 
 ### Organizations
 
 - **ckan_organization_list**: List all organizations
 - **ckan_organization_show**: Details of an organization
+- **ckan_organization_search**: Search organizations by name
 
 ### DataStore
 
