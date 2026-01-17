@@ -26,6 +26,10 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# MCP and Claude local config
+.mcp.json
+.claude/*.local.json
+
 # Logs
 logs/
 *.log
